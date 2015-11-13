@@ -7,33 +7,17 @@ import (
 
 func init() {
 	//首页
-	beego.Router("/", &controllers.MainController{})
-
+	beego.Router("/", &controllers.HomeController{})
 	beego.Router("/first", &controllers.FirstController{})
 	beego.Router("/second", &controllers.SecondController{})
 
-	/*beego.Router("/THWL", &controllers.THWLController{})
-	beego.Router("/Wuziqi/PVC", &controllers.WuziqiController{})
+	// 能力地图、新员工培训、新员工交流
+	beego.Router("/capability", &controllers.CapabilityController{})
+	beego.Router("/training", &controllers.TrainingController{})
+	beego.Router("/communicate", &controllers.CommunicateController{})
 
-	beego.Router("/Wuziqi/PVP", &controllers.WuziqiPVPController{})
-	beego.Router("/Wuziqi/PVP/black", &controllers.WuziqiPVPBController{})
-	beego.Router("/Wuziqi/PVP/white", &controllers.WuziqiPVPWController{})
-	beego.Router("/Wuziqi/PVP/save", &controllers.WuziqiPVPSController{})
-	beego.Router("/Wuziqi/PVP/getall", &controllers.WuziqiPVPGController{})
-	beego.Router("/Result", &controllers.ResultController{})
-
-	beego.Router("/Wuziqi/PVP/ChooseDesk", &controllers.ChooseDeskController{})
-	beego.Router("/Wuziqi/PVP/ChooseRoom", &controllers.ChooseRoomController{})
-	beego.Router("/Wuziqi/PVP/MatchingRoom", &controllers.MatchingRoomController{})
-
-	//beego.Router("/Wuziqi/PVP/Desk_1", &controllers.Desk_1_Controller{})
-	beego.Router("/Wuziqi/PVP1", &controllers.WuziqiPVP1Controller{})
-	beego.Router("/Wuziqi/PVP/black1", &controllers.WuziqiPVPB1Controller{})
-	beego.Router("/Wuziqi/PVP/white1", &controllers.WuziqiPVPW1Controller{})
-	beego.Router("/Wuziqi/PVP/save1", &controllers.WuziqiPVPS1Controller{})
-	beego.Router("/Wuziqi/PVP/getall1", &controllers.WuziqiPVPG1Controller{})*/
-
-	beego.Router("/Wuziqi/PVP/login", &controllers.LoginController{})
-	beego.Router("/Wuziqi/PVP/regist", &controllers.RegistController{})
+	// 登录与注册
+	beego.Router("/login", &controllers.LoginController{})
+	beego.Router("/regist", &controllers.RegistController{})
 
 }

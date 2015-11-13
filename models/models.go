@@ -25,8 +25,6 @@ func RegistDB() {
 	orm.RegisterModel(new(User))
 	orm.RegisterDriver("mysql", orm.DR_MySQL)
 	orm.RegisterDataBase("default", "mysql", "h00346577:2!h52112@tcp(182.254.241.198:3306)/studygolang?charset=utf8", 30, 30)
-
-	// orm.RegisterDataBase("www", "mysql", "gobang:123456@tcp(182.254.241.198:3306)/gobang?charset=utf8", 30, 30)
 }
 
 func AddUser() {

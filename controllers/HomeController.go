@@ -5,11 +5,11 @@ import (
 	"time"
 )
 
-type MainController struct {
+type HomeController struct {
 	beego.Controller
 }
 
-func (c *MainController) Get() {
+func (c *HomeController) Get() {
 	c.Data["FirstStep"] = `
 			<div align="middle">
 				<nav>
@@ -30,7 +30,7 @@ func (c *MainController) Get() {
 				</nav>
 			</div>
 	`
-	c.Data["Author"] = "叶青，子龙"
+	c.Data["Author"] = "Mar组"
 	c.Data["Time"] = time.Now().Format(time.Stamp)
 	c.Data["IsHome"] = true
 
@@ -51,7 +51,7 @@ type FirstController struct {
 }
 
 func (c *FirstController) Get() {
-	c.TplNames = "Home.html"
+
 	c.Data["FirstStep"] = `
 			<div align="middle">
 				<nav>
@@ -75,9 +75,10 @@ func (c *FirstController) Get() {
 				
 				<p>2-5：2-6回深圳  暂停</p>
 	`
-	c.Data["Author"] = "叶青，子龙"
+	c.Data["Author"] = "Mars组"
 	c.Data["Time"] = time.Now().Format(time.Stamp)
 	c.Data["IsHome"] = true
+	c.TplNames = "Home.html"
 
 }
 
@@ -109,7 +110,7 @@ func (c *SecondController) Get() {
 				
 				<br></br> <br></br> <br></br><br></br><br></br><br></br><br></br><br></br>
 	`
-	c.Data["Author"] = "叶青，子龙"
+	c.Data["Author"] = "Mars组"
 	c.Data["Time"] = time.Now().Format(time.Stamp)
 	c.Data["IsHome"] = true
 	c.TplNames = "Home.html"
