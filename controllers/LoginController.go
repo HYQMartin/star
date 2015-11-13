@@ -1,11 +1,11 @@
 package controllers
 
 import (
-	"beego/wuziqi/models"
 	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
+	"star/models"
 	//"time"
 )
 

@@ -1,8 +1,8 @@
 package routers
 
 import (
-	"beego/wuziqi/controllers"
 	"github.com/astaxie/beego"
+	"star/controllers"
 )
 
 func init() {

@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"beego/wuziqi/models"
 	"github.com/astaxie/beego"
+	"star/models"
 )
 
 type ResultController struct {
