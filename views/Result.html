@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+{{template "head"}}
+<body>
+{{template "navbar" .}}
+
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">总战绩</div>
+  <div class="panel-body">
+    <p>纪录每个人的总战绩，将根据总盘数或者胜率进行排序！</p>
+  </div>
+<!-- Table -->
+  <div>
+  <table class="table table-hover table-striped" >
+    <tr>
+    <thead><td align="middle"> 名字</td>
+  	<td align="middle">胜(盘)</td>
+    <td align="middle"> 总(盘)</td>	
+     <td align="middle">胜率(%)</td>
+  	</thead>	
+    </tr>
+    {{range .AllUser}}
+    <tr>
+    	<td align="middle">{{.Name}}</td>
+    	<td align="middle">{{.Win}}</td>
+    	<td align="middle">{{.Total}}</td>
+    	<td align="middle"></td>
+    </tr>
+   {{end}}
+  </table>
+  </div>
+
+</div>
+
+
+
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">每一盘</div>
+  <div class="panel-body">
+    <p>纪录每一盘的纪录，将根据时间后先进行排序！</p>
+  </div>
+<!-- Table -->
+  <div>
+  <table class="table table-hover table-striped" >
+    <tr>
+    <thead><td align="middle"> 盘数</td>
+  	<td align="middle">胜者名字</td>
+  	<td align="middle">棋子颜色</td>
+     <td align="middle">步数</td>
+     <td align="middle">开始时间</td>
+     <td align="middle">结束时间</td></thead>	
+    </tr>
+
+    <tr>
+    	<td align="middle">1</td>
+    	<td align="middle">叶青</td>
+    	<td align="middle">黑</td>
+    	<td align="middle">9</td>
+    	<td align="middle">2.12 16:20</td>
+    	<td align="middle">2.12 17:20</td>
+    </tr>
+
+  </table>
+  </div>
+</div>
+ 
+		<div class="container">
+				<img src="static/img/lyf.png">
+		</div>
+
+<div><h5 align="middle">现在时间：{{.Time}}</h5></div>
+<div><h5 align="middle">开发者：{{.Author}}</h5></div>
+		<script type="text/javascript" src="http://cdn.staticfile.org/jquery/2.0.3/jquery.min.js"></script>
+		<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+	</body>
+</html>
