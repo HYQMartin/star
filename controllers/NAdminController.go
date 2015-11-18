@@ -21,8 +21,8 @@ type NCatalogController struct {
 
 func (this *NCatalogController) Add() {
 	this.Data["IsAddCatalog"] = true
-	this.Layout = "layout/admin.html"
-	this.TplNames = "catalog/add.html"
+	this.Layout = "main_newemployee/layout/admin.html"
+	this.TplNames = "main_newemployee/catalog/add.html"
 }
 
 func (this *NCatalogController) Edit() {
@@ -39,8 +39,8 @@ func (this *NCatalogController) Edit() {
 	}
 
 	this.Data["Catalog"] = c
-	this.Layout = "layout/admin.html"
-	this.TplNames = "catalog/edit.html"
+	this.Layout = "main_newemployee/layout/admin.html"
+	this.TplNames = "main_newemployee/catalog/edit.html"
 }
 
 func (this *NCatalogController) Del() {
@@ -178,7 +178,7 @@ func (this *NAdminController) CheckLogin() {
 	}
 }
 func (this *NAdminController) Default() {
-	this.Layout = "layout/admin.html"
+	this.Layout = "main_newemployee/layout/admin.html"
 	this.TplNames = "me/default.html"
 }
 
@@ -191,15 +191,15 @@ func (this *NArticleController) Draft() {
 	var blogs []*models.NewemployeeBlog
 	blog.NBlogs().Filter("Status", 0).All(&blogs)
 	this.Data["Blogs"] = blogs
-	this.Layout = "layout/admin.html"
-	this.TplNames = "article/draft.html"
+	this.Layout = "main_newemployee/layout/admin.html"
+	this.TplNames = "main_newemployee/article/draft.html"
 }
 
 func (this *NArticleController) Add() {
 	this.Data["Catalogs"] = catalog.NAll()
 	this.Data["IsPost"] = true
-	this.Layout = "layout/admin.html"
-	this.TplNames = "article/add.html"
+	this.Layout = "main_newemployee/layout/admin.html"
+	this.TplNames = "main_newemployee/article/add.html"
 	this.JsStorage("deleteKey", "post/new")
 }
 
@@ -257,8 +257,8 @@ func (this *NArticleController) Edit() {
 	this.Data["Content"] = blog.NReadBlogContent(b).Content
 	this.Data["Blog"] = b
 	this.Data["Catalogs"] = catalog.NAll()
-	this.Layout = "layout/admin.html"
-	this.TplNames = "article/edit.html"
+	this.Layout = "main_newemployee/layout/admin.html"
+	this.TplNames = "main_newemployee/article/edit.html"
 }
 
 func (this *NArticleController) DoEdit() {
