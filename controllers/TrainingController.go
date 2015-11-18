@@ -9,6 +9,6 @@ type TrainingController struct {
 }
 
 func (t *TrainingController) Get() {
-	t.TplNames = "Training.html"
+	t.TplNames = "main_training/Training.html"
 	return
 }

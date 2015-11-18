@@ -9,6 +9,6 @@ type CapabilityController struct {
 }
 
 func (c *CapabilityController) Get() {
-	c.TplNames = "Capability.html"
+	c.TplNames = "main_capability/Capability.html"
 	return
 }
