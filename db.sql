@@ -58,3 +58,25 @@ CREATE TABLE IF NOT EXISTS `newemployee_blog_content` (
    `id` bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
    `content` longtext NOT NULL
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
+CREATE TABLE IF NOT EXISTS `capability_map` (
+   `id` bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
+   `capability_id` bigint NOT NULL,
+   `capability` varchar(255) NOT NULL,
+   `class` varchar(255) NOT NULL,
+   `sub_class` varchar(255) NOT NULL,
+   `description` varchar(255),
+   `expert_pool` varchar(255)  
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+CREATE INDEX `capability_map_catalog_id` ON `capability_map` (`capability_id`);
+
+
+CREATE TABLE IF NOT EXISTS `capabilities` (
+   `id` bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
+   `user_id` bigint NOT NULL,
+   `user_name` varchar(255) NOT NULL,
+   `capability_id` bigint NOT NULL,
+   `level` varchar(255)
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+

@@ -18,5 +18,7 @@ func main() {
 	//models.AddUser()
 	//models.AddTotalAndWin("martin", true)
 	g.InitEnv()
+	//models.AddCapabilitiesData()
+	//models.AddCapabilityMap()
 	beego.Run()
 }
