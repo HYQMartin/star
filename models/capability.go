@@ -231,3 +231,47 @@ func AddCapabilityData(capabilityid int64, userid int64, username string, level 
 	o.Insert(ca)
 	return "success"
 }
+
+func ALLCapabilityMap() (all []CapabilityMap, err error) {
+	all = make([]CapabilityMap, 0)
+	o := orm.NewOrm()
+	qs := o.QueryTable("capability_map")
+	_, err = qs.All(&all)
+	return
+}
+func GetCapabilitiesByCID(capabilityid int64) (all []Capabilities, err error) {
+	all = make([]Capabilities, 0)
+	o := orm.NewOrm()
+	qs := o.QueryTable("capabilities")
+	_, err = qs.Filter("capability_id", capabilityid).All(&all)
+	return
+}
+func GetLevelByCIDAndUser(capabilityid int64, user string) (level string, err error) {
+	var one Capabilities
+	o := orm.NewOrm()
+	qs := o.QueryTable("capabilities")
+	err = qs.Filter("capability_id", capabilityid).Filter("user_name", user).One(&one)
+	return one.Level, err
+}
+func ALLCapabilities() (all []Capabilities, err error) {
+	// alluser = make(map[string]string, 0)
+	all = make([]Capabilities, 0)
+	o := orm.NewOrm()
+	qs := o.QueryTable("capabilities")
+	_, err = qs.All(&all)
+	// for _, v := range all {
+	// 	alluser[v.UserName] = "1"
+	// }
+
+	return
+}
+
+func GetLevel(capabilityid int64, user string, c []Capabilities) (level string) {
+	for _, v := range c {
+		if (v.CapabilityId == capabilityid) && (v.UserName == user) {
+			level = v.Level
+		}
+	}
+
+	return
+}
