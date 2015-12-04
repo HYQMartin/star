@@ -94,7 +94,14 @@ func engine() string {
 func init() {
 	orm.RegisterModelWithPrefix("bb_", new(Catalog), new(Blog), new(BlogContent))
 	// orm.RegisterModelWithPrefix("newemployee_", new(CatalogNE), new(BlogNE), new(BlogContentNE))
-	orm.RegisterModel(new(NewemployeeCatalog), new(NewemployeeBlog), new(NewemployeeBlogContent), new(CapabilityMap), new(Capabilities))
+	orm.RegisterModel(
+		new(NewemployeeCatalog),
+		new(NewemployeeBlog),
+		new(NewemployeeBlogContent),
+		new(CapabilityMap),
+		new(Capabilities),
+		new(TrainingSchedulePublish),
+		new(TrainingScheduleCollect))
 }
 
 //

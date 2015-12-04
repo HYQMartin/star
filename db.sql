@@ -80,3 +80,27 @@ CREATE TABLE IF NOT EXISTS `capabilities` (
    `level` varchar(255)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+
+
+
+#training 表项创建
+CREATE TABLE IF NOT EXISTS `training_schedule_publish` (
+   `id` bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
+   `title` varchar(255) NOT NULL,
+   `teacher` varchar(255) NOT NULL,
+   `content` varchar(255),
+   `description` varchar(255),
+   `start_date` datetime,
+   `room` varchar(255) NOT NULL,
+   `status` varchar(255)  NOT NULL
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
+CREATE TABLE IF NOT EXISTS `training_schedule_collect` (
+   `id` bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
+   `title` varchar(255) NOT NULL,
+   `description` varchar(255) NOT NULL,
+   `fields` varchar(255) NOT NULL,
+   `important_level` varchar(255) NOT NULL,
+   `expect_date` datetime
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;

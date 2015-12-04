@@ -12,13 +12,14 @@ func init() {
 	// 能力地图
 	beego.Router("/capability", &controllers.CapabilityController{})
 
-	// 培训交流
+	/* 培训交流 */
 	beego.Router("/training", &controllers.TrainingController{})
+	//
+	beego.Router("/training/publish", &controllers.TrainingPublishController{})
+	//beego.Router("/training/collect", &controllers.TrainingController{})
 
 	// 新员工交流
-
 	beego.Router("/newemployee", &controllers.CommunicateController{})
-
 	beego.Router("/newemployee/blog", &controllers.CommunicateController{})
 	beego.Router("/newemployee/article/:ident", &controllers.CommunicateController{}, "get:Read")
 	beego.Router("/newemployee/catalog/:ident", &controllers.CommunicateController{}, "get:ListByCatalog")

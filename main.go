@@ -5,6 +5,7 @@ import (
 	// "github.com/astaxie/beego/orm"
 	// "star/controllers"
 	"star/g"
+	// "star/models"
 	_ "star/routers"
 )
 
@@ -18,6 +19,8 @@ func main() {
 	//models.AddUser()
 	//models.AddTotalAndWin("martin", true)
 	g.InitEnv()
+	// models.AddTrainingSchedulePublishs()
+	// models.AddTrainingScheduleCollects()
 	//go controllers.GetCapabilityFromMysqlPerHour()//减少查询数据库
 	//models.AddCapabilitiesData()
 	//models.AddCapabilityMap()
