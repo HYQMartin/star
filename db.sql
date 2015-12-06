@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS `bb_blog` (
    `type` tinyint NOT NULL,
    `status` tinyint NOT NULL,
    `views` bigint NOT NULL,
+   `creator` varchar(255) NOT NULL,
    `created` datetime NOT NULL
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 CREATE INDEX `bb_blog_catalog_id` ON `bb_blog` (`catalog_id`);
@@ -26,6 +27,13 @@ CREATE INDEX `bb_blog_catalog_id` ON `bb_blog` (`catalog_id`);
 CREATE TABLE IF NOT EXISTS `bb_blog_content` (
    `id` bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
    `content` longtext NOT NULL
+) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
+CREATE TABLE IF NOT EXISTS `user` (
+    `id` bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    `name` varchar(255) NOT NULL UNIQUE,
+    `password` varchar(255) NOT NULL
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
@@ -49,6 +57,7 @@ CREATE TABLE IF NOT EXISTS `newemployee_blog` (
    `type` tinyint NOT NULL,
    `status` tinyint NOT NULL,
    `views` bigint NOT NULL,
+   `creator` varchar(255) NOT NULL,
    `created` datetime NOT NULL
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 CREATE INDEX `newemployee_blog_catalog_id` ON `newemployee_blog` (`catalog_id`);
@@ -74,10 +83,11 @@ CREATE INDEX `capability_map_catalog_id` ON `capability_map` (`capability_id`);
 
 CREATE TABLE IF NOT EXISTS `capabilities` (
    `id` bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
-   `user_id` bigint NOT NULL,
+   `user_id` varchar(255) NOT NULL,
    `user_name` varchar(255) NOT NULL,
    `capability_id` bigint NOT NULL,
-   `level` varchar(255)
+   `level` varchar(255),
+   `description` varchar(255)
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 

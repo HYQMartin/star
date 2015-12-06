@@ -15,8 +15,8 @@
 	
 	<div class="pull-right">
 		<ul class="nav navbar-nav">
-			{{if .IsLogin}}
-				<li><a href="/login?exit=true">{{.UserName}},您好！退出登录</a></li>
+			{{if $.IsLogin}}
+				<li><a href="/logout">{{.UserName}},您好！退出登录</a></li>
 			{{else}}
 				<li><a href="/login">登录</a></li>
 			{{end}}

@@ -99,9 +99,11 @@
                     <li >
                         <a href="#collect" data-toggle="tab">课程收集</a>
                     </li>
+                    {{if .IsAdmin}}
                     <li>
                         <a href="#publish" data-toggle="tab">课程发布</a>
                     </li>
+                    {{end}}
                     <li class="dropdown pull-right">
                          <a href="#" data-toggle="dropdown" class="dropdown-toggle">设置<strong class="caret"></strong></a>
                         <ul class="dropdown-menu">
@@ -280,6 +282,7 @@
                         <!-- tab third 
                             "schedule publish" visiable for administrator
                         -->
+                        {{if .IsAdmin}}
                         <div class="tab-pane" id="publish">
                             <div class="span6" style="float:left;width:60%">
                                 <div class="thumbnail">
@@ -356,6 +359,7 @@
                                 </div>
                             </div>
                         </div>
+                        {{end}}
                     </div>
 
                     <!-- Fixed Page

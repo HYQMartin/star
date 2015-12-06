@@ -14,6 +14,7 @@ type CommunicateController struct {
 func (this *CommunicateController) Get() {
 	this.Data["Catalogs"] = catalog.NAll()
 	this.Data["PageTitle"] = "新员工培养"
+	this.Data["Addblog"] = ""
 	this.Layout = "main_newemployee/layout/default.html"
 	this.TplNames = "main_newemployee/index.html"
 }
@@ -33,6 +34,7 @@ func (this *CommunicateController) Read() {
 	this.Data["Content"] = g.RenderMarkdown(blog.NReadBlogContent(b).Content)
 	this.Data["PageTitle"] = b.Title
 	this.Data["Catalog"] = catalog.NOneById(b.CatalogId)
+	this.Data["Addblog"] = `<a href="/newemployee">返回</a>`
 	this.Layout = "main_newemployee/layout/default.html"
 	this.TplNames = "main_newemployee/article/read.html"
 }
@@ -43,12 +45,6 @@ func (this *CommunicateController) ListByCatalog() {
 		this.Ctx.WriteString("catalog ident is blank")
 		return
 	}
-	// if cata == "capability" {
-	// 	this.Redirect("/capability", 302)
-	// }
-	// if cata == "training" {
-	// 	this.Redirect("/training", 302)
-	// }
 	limit := this.GetIntWithDefault("limit", 10)
 
 	c := catalog.NOneByIdent(cata)
@@ -64,7 +60,7 @@ func (this *CommunicateController) ListByCatalog() {
 	this.Data["Catalog"] = c
 	this.Data["Blogs"] = blogs
 	this.Data["PageTitle"] = c.Name
-
+	this.Data["Addblog"] = `<a href="/newemployee/admin/article/add">新增帖子</a>  <div><a href="/newemployee">  返回</a></div>`
 	this.Layout = "main_newemployee/layout/default.html"
-	this.TplNames = "main_newemployee/article/newemployee_by_catalog.html"
+	this.TplNames = "main_newemployee/article/by_catalog.html"
 }

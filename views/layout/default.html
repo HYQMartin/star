@@ -15,14 +15,10 @@
     <div id="screen">
         <header id="header" class="mt20">
             <div class="fr">
-                <div id="contact-me" style="margin-top: 42px!important;">
-                    <div class="social">
-                        <a target="_blank" class="weibo" href="http://weibo.com" title="Weibo">Weibo</a>
-                        <a target="_blank" class="facebook" href="https://www.facebook.com" title="Facebook">Facebook</a>
-                        <a target="_blank" class="twitter" href="https://twitter.com" title="Twitter">Twitter</a>
-                        <a target="_blank" class="github" href="https://github.com" title="GitHub">GitHub</a>
-                    </div>
+                <div  style="margin-top: 42px!important;">
+                        {{str2html .Addblog}}
                 </div>
+                
             </div>
             <div class="fl">
                 <a href="/" ><img id="logo-img" src="{{.BlogLogo}}" class="img-circle" width="90" height="90"></a>

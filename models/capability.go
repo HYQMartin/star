@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"github.com/astaxie/beego/orm"
 )
 
@@ -17,9 +18,10 @@ type CapabilityMap struct {
 type Capabilities struct {
 	Id           int64
 	CapabilityId int64
-	UserId       int64
+	UserId       string
 	UserName     string
 	Level        string
+	Description  string
 }
 
 func AddCapabilityMap() {
@@ -178,7 +180,11 @@ func AddCapability(class string, subclass string, capabilityid int64, capability
 
 	err := qs.Filter("Class", class).Filter("SubClass", subclass).Filter("Capability", capability).One(&c)
 	if err != orm.ErrNoRows {
-		return "exist such capability"
+		_, errr := qs.Filter("Class", class).Filter("SubClass", subclass).Filter("Capability", capability).Delete()
+		if errr != nil {
+			fmt.Println("*************", errr)
+			return "delete old capability failed"
+		}
 	}
 
 	err = qs.Filter("CapabilityId", capabilityid).One(&c)
@@ -198,19 +204,18 @@ func AddCapability(class string, subclass string, capabilityid int64, capability
 }
 
 func AddCapabilitiesData() {
-	AddCapabilityData(1, 1, "黄业钦", "了解")
-	AddCapabilityData(2, 1, "黄业钦", "了解")
-	AddCapabilityData(3, 1, "黄业钦", "了解")
-	AddCapabilityData(4, 1, "黄业钦", "了解")
-	AddCapabilityData(5, 1, "黄业钦", "了解")
-	AddCapabilityData(6, 1, "黄业钦", "了解")
-	AddCapabilityData(7, 1, "黄业钦", "了解")
-	AddCapabilityData(8, 1, "黄业钦", "了解")
-
+	AddCapabilityData(1, "h00346577", "黄业钦", "了解", "")
+	AddCapabilityData(2, "h00346577", "黄业钦", "精通", "")
+	AddCapabilityData(3, "h00346577", "黄业钦", "熟悉", "")
+	AddCapabilityData(4, "h00346577", "黄业钦", "了解", "")
+	AddCapabilityData(5, "h00346577", "黄业钦", "了解", "")
+	AddCapabilityData(6, "h00346577", "黄业钦", "了解", "")
+	AddCapabilityData(7, "h00346577", "黄业钦", "了解", "")
+	AddCapabilityData(8, "h00346577", "黄业钦", "了解", "")
 }
 
 // add user in capabilities
-func AddCapabilityData(capabilityid int64, userid int64, username string, level string) string {
+func AddCapabilityData(capabilityid int64, userid string, username string, level string, desc string) string {
 	o := orm.NewOrm()
 
 	//验证合法性
@@ -220,7 +225,11 @@ func AddCapabilityData(capabilityid int64, userid int64, username string, level 
 
 	err := qs.Filter("UserId", userid).Filter("UserName", username).Filter("CapabilityId", capabilityid).One(&c)
 	if err != orm.ErrNoRows {
-		return "exist such userid"
+		_, errr := qs.Filter("UserId", userid).Filter("UserName", username).Filter("CapabilityId", capabilityid).Delete()
+		if errr != nil {
+			fmt.Println("*************", errr)
+			return "delete old capabilities failed"
+		}
 	}
 
 	ca := new(Capabilities)
@@ -228,6 +237,7 @@ func AddCapabilityData(capabilityid int64, userid int64, username string, level 
 	ca.Level = level
 	ca.UserId = userid
 	ca.UserName = username
+	ca.Description = desc
 	o.Insert(ca)
 	return "success"
 }

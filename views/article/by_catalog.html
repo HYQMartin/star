@@ -7,8 +7,12 @@
     <div class="entry-views">{{.Views}}</div>
 
     <div class="entry-meta">
-      <span>发表于：{{dateformat .Created "2006-01-02 15:04:05"}}</span>
+      <span>{{.Creator}} 发表于：{{dateformat .Created "2006-01-02 15:04:05"}}</span>
       {{if $.IsAdmin}}
+      (<a href="/admin/article/edit?id={{.Id}}">Edit</a>
+      <span class="cut-line">|</span>
+      <a href="/admin/article/del?id={{.Id}}">Del</a>)
+      {{else if eq .Creator $.UserName}}
       (<a href="/admin/article/edit?id={{.Id}}">Edit</a>
       <span class="cut-line">|</span>
       <a href="/admin/article/del?id={{.Id}}">Del</a>)

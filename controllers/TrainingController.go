@@ -2,13 +2,13 @@ package controllers
 
 import (
 	"fmt"
-	"github.com/astaxie/beego"
+	// "github.com/astaxie/beego"
 	"star/models"
 	"time"
 )
 
 type TrainingController struct {
-	beego.Controller
+	BaseController
 }
 
 func (t *TrainingController) Get() {
@@ -28,7 +28,7 @@ func (t *TrainingController) Get() {
 }
 
 type TrainingPublishController struct {
-	beego.Controller
+	BaseController
 }
 
 func (t *TrainingPublishController) Post() {

@@ -22,7 +22,7 @@ func main() {
 	// models.AddTrainingSchedulePublishs()
 	// models.AddTrainingScheduleCollects()
 	//go controllers.GetCapabilityFromMysqlPerHour()//减少查询数据库
-	//models.AddCapabilitiesData()
+	// models.AddCapabilitiesData()
 	//models.AddCapabilityMap()
 	beego.Run()
 }

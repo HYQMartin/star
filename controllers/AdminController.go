@@ -20,12 +20,20 @@ type CatalogController struct {
 }
 
 func (this *CatalogController) Add() {
+	if !this.IsAdmin {
+		this.Ctx.WriteString("you are not the admin")
+		return
+	}
 	this.Data["IsAddCatalog"] = true
 	this.Layout = "layout/admin.html"
 	this.TplNames = "catalog/add.html"
 }
 
 func (this *CatalogController) Edit() {
+	if !this.IsAdmin {
+		this.Ctx.WriteString("you are not the admin")
+		return
+	}
 	id, err := this.GetInt("id")
 	if err != nil {
 		this.Ctx.WriteString("param id should be digit")
@@ -44,6 +52,10 @@ func (this *CatalogController) Edit() {
 }
 
 func (this *CatalogController) Del() {
+	if !this.IsAdmin {
+		this.Ctx.WriteString("you are not the admin")
+		return
+	}
 	id, err := this.GetInt("id")
 	if err != nil {
 		this.Ctx.WriteString("param id should be digit")
@@ -115,6 +127,10 @@ func (this *CatalogController) extractCatalog(imgMust bool) (*models.Catalog, er
 }
 
 func (this *CatalogController) DoEdit() {
+	if !this.IsAdmin {
+		this.Ctx.WriteString("you are not the admin")
+		return
+	}
 	cid, err := this.GetInt("catalog_id")
 	if err != nil {
 		this.Ctx.WriteString("catalog_id is illegal")
@@ -152,6 +168,10 @@ func (this *CatalogController) DoEdit() {
 }
 
 func (this *CatalogController) DoAdd() {
+	if !this.IsAdmin {
+		this.Ctx.WriteString("you are not the admin")
+		return
+	}
 	o, err := this.extractCatalog(true)
 	if err != nil {
 		this.Ctx.WriteString(err.Error())
@@ -173,7 +193,7 @@ type AdminController struct {
 }
 
 func (this *AdminController) CheckLogin() {
-	if !this.IsAdmin {
+	if !this.IsAdmin && !this.IsLogin {
 		this.Redirect("/login", 302)
 	}
 }
@@ -228,7 +248,7 @@ func (this *ArticleController) DoAdd() {
 		return
 	}
 
-	b := &models.Blog{Ident: ident, Title: title, Keywords: keywords, CatalogId: int64(catalog_id), Type: int8(aType), Status: int8(status)}
+	b := &models.Blog{Ident: ident, Title: title, Keywords: keywords, CatalogId: int64(catalog_id), Type: int8(aType), Status: int8(status), Creator: this.UserName}
 	_, err := blog.Save(b, content)
 
 	if err != nil {
@@ -253,6 +273,10 @@ func (this *ArticleController) Edit() {
 		this.Ctx.WriteString("no such article")
 		return
 	}
+	if this.UserName != b.Creator && !this.IsAdmin {
+		this.Ctx.WriteString("you are not author or admin")
+		return
+	}
 
 	this.Data["Content"] = blog.ReadBlogContent(b).Content
 	this.Data["Blog"] = b
@@ -273,7 +297,10 @@ func (this *ArticleController) DoEdit() {
 		this.Ctx.WriteString("no such article")
 		return
 	}
-
+	if this.UserName != b.Creator && !this.IsAdmin {
+		this.Ctx.WriteString("you are not author or admin")
+		return
+	}
 	title := this.GetString("title")
 	ident := this.GetString("ident")
 	keywords := this.GetString("keywords")
@@ -328,7 +355,10 @@ func (this *ArticleController) Del() {
 		this.Ctx.WriteString("no such article")
 		return
 	}
-
+	if this.UserName != b.Creator && !this.IsAdmin {
+		this.Ctx.WriteString("you are not author or admin")
+		return
+	}
 	err = blog.Del(b)
 	if err != nil {
 		this.Ctx.WriteString(err.Error())

@@ -11,6 +11,8 @@ func init() {
 
 	// 能力地图
 	beego.Router("/capability", &controllers.CapabilityController{})
+	beego.Router("/capability/update", &controllers.CapabilityUpdateController{})
+	beego.Router("/capability/addcapability", &controllers.CapabilityAddController{})
 
 	/* 培训交流 */
 	beego.Router("/training", &controllers.TrainingController{})
@@ -34,8 +36,9 @@ func init() {
 	beego.Router("/newemployee/admin/article/draft", &controllers.NArticleController{}, "get:Draft")
 
 	// 登录与注册
-	beego.Router("/login_old", &controllers.Login_Controller{})
 	beego.Router("/regist", &controllers.RegistController{})
+	beego.Router("/regist", &controllers.RegistController{})
+	beego.Router("/logout", &controllers.LoginController{}, "get:Logout")
 
 	//上传下载文件
 	beego.Router("/file", &controllers.FileController{})
@@ -49,7 +52,6 @@ func init() {
 	beego.Router("/catalog/:ident", &controllers.MainController{}, "get:ListByCatalog")
 
 	beego.Router("/login", &controllers.LoginController{}, "get:Login;post:DoLogin")
-	beego.Router("/logout", &controllers.LoginController{}, "get:Logout")
 
 	//管理员
 	beego.Router("/admin", &controllers.AdminController{}, "get:Default")

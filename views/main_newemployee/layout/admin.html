@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+{{template "head"}}
 <head>
     <title>后台管理 - {{.BlogTitle}}</title>
     <link rel="stylesheet" href="/static/css/lib.min.css"/>
@@ -7,17 +8,11 @@
     <script type="text/javascript" src="/static/javascript/lib.min.js"></script>
 </head>
 <body>
+{{template "headbar" .}}
     <div id="screen">
         <header id="header" class="mt20">
             <div class="fr">
-                <div id="contact-me" style="margin-top: 42px!important;">
-                    <div class="social">
-                        <a target="_blank" class="weibo" href="http://weibo.com/goruby" title="Weibo">Weibo</a>
-                        <a target="_blank" class="facebook" href="https://www.facebook.com" title="Facebook">Facebook</a>
-                        <a target="_blank" class="twitter" href="https://twitter.com" title="Twitter">Twitter</a>
-                        <a target="_blank" class="github" href="https://github.com" title="GitHub">GitHub</a>
-                    </div>
-                </div>
+                <a href="/newemployee">返回</a>
             </div>
             <div class="fl">
                 <a href="/" ><img id="logo-img" src="{{.BlogLogo}}" class="img-circle" width="90" height="90"></a>
@@ -30,7 +25,9 @@
             <hr>
         </header>
         <ul class="nav nav-pills mb20">
+            {{if $.IsAdmin}}
             <li class="{{if .IsAddCatalog}}active{{end}}"><a href="/newemployee/admin/catalog/add">增加分类</a></li>
+            {{end}}
             <li class="{{if .IsPost}}active{{end}}"><a href="/newemployee/admin/article/add">发表博文</a></li>
             <li class="{{if .IsDraft}}active{{end}}"><a href="/newemployee/admin/article/draft">[草稿箱]</a></li>
             <li><a href="/logout">退出</a></li>

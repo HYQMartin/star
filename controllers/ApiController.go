@@ -7,6 +7,7 @@ import (
 	"github.com/ulricqin/goutils/paginator"
 	"github.com/ulricqin/goutils/strtool"
 	"star/g"
+	"star/models"
 	"star/models/catalog"
 	"strconv"
 	"strings"
@@ -23,7 +24,9 @@ type Checker interface {
 
 type BaseController struct {
 	beego.Controller
-	IsAdmin bool
+	IsAdmin  bool
+	IsLogin  bool
+	UserName string
 }
 
 func (this *BaseController) Prepare() {
@@ -40,19 +43,29 @@ func (this *BaseController) Prepare() {
 }
 
 func (this *BaseController) AssignIsAdmin() {
-	bb_name := this.Ctx.GetCookie("bb_name")
-	bb_password := this.Ctx.GetCookie("bb_password")
-	if bb_name == "" || bb_password == "" {
+	admin_name := this.Ctx.GetCookie("admin_name")
+	admin_password := this.Ctx.GetCookie("admin_password")
+	name := this.Ctx.GetCookie("name")
+	password := this.Ctx.GetCookie("password")
+
+	if admin_name == g.RootName && admin_password == g.RootPass && admin_name != "" && admin_password != "" {
+		this.IsAdmin = true
+		this.IsLogin = true
+		this.UserName = "管理员"
+		fmt.Println("*******************登录成功，username=", this.UserName)
+	} else {
 		this.IsAdmin = false
-		return
+		if models.CheckPassword(name, password) {
+			this.IsLogin = true
+			this.UserName = name
+		} else {
+			this.IsLogin = false
+		}
 	}
 
-	if bb_name != g.RootName || bb_password != g.RootPass {
-		this.IsAdmin = false
-	}
-
-	this.IsAdmin = true
 	this.Data["IsAdmin"] = this.IsAdmin
+	this.Data["IsLogin"] = this.IsLogin
+	this.Data["UserName"] = this.UserName
 }
 
 func (this *BaseController) SetPaginator(per int, nums int64) *paginator.Paginator {

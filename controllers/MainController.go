@@ -13,6 +13,7 @@ type MainController struct {
 func (this *MainController) Get() {
 	this.Data["Catalogs"] = catalog.All()
 	this.Data["PageTitle"] = "首页"
+	this.Data["Addblog"] = ""
 	this.Layout = "layout/default.html"
 	this.TplNames = "index.html"
 }
@@ -32,6 +33,7 @@ func (this *MainController) Read() {
 	this.Data["Content"] = g.RenderMarkdown(blog.ReadBlogContent(b).Content)
 	this.Data["PageTitle"] = b.Title
 	this.Data["Catalog"] = catalog.OneById(b.CatalogId)
+	this.Data["Addblog"] = `<a href="/catalog/share">返回</a>`
 	this.Layout = "layout/default.html"
 	this.TplNames = "article/read.html"
 }
@@ -66,7 +68,8 @@ func (this *MainController) ListByCatalog() {
 	this.Data["Catalog"] = c
 	this.Data["Blogs"] = blogs
 	this.Data["PageTitle"] = c.Name
-
+	this.Data["Addblog"] = `<a href="/admin/article/add">新增总结分享</a><div><a href="/">  返回</a></div>`
 	this.Layout = "layout/default.html"
+
 	this.TplNames = "article/by_catalog.html"
 }

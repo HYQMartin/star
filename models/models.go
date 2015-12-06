@@ -11,10 +11,7 @@ import (
 type User struct {
 	Id       int64  `orm:"auto"`
 	Name     string `orm:"index;unique"`
-	Password string `orm:"size(20)"`
-	Phone    string `orm:"index;unique"`
-	Total    int    `orm:"null"`
-	Win      int    `orm:"null"`
+	Password string `orm:"size(256)"`
 }
 
 type Catalog struct {
@@ -38,6 +35,7 @@ type Blog struct {
 	Type                  int8 /*0:original, 1:translate, 2:reprint*/
 	Status                int8 /*0:draft, 1:release*/
 	Views                 int64
+	Creator               string
 	Created               time.Time `orm:"auto_now_add;type(datetime)"`
 }
 
@@ -67,6 +65,7 @@ type NewemployeeBlog struct {
 	Type                  int8 /*0:original, 1:translate, 2:reprint*/
 	Status                int8 /*0:draft, 1:release*/
 	Views                 int64
+	Creator               string
 	Created               time.Time `orm:"auto_now_add;type(datetime)"`
 }
 
@@ -101,14 +100,9 @@ func init() {
 		new(CapabilityMap),
 		new(Capabilities),
 		new(TrainingSchedulePublish),
-		new(TrainingScheduleCollect))
+		new(TrainingScheduleCollect),
+		new(User))
 }
-
-//
-//
-//
-//
-//
 
 // func RegistDB() {
 //regist model
@@ -119,34 +113,17 @@ func init() {
 // }
 //
 func AddUser() {
-	/*o := orm.NewOrm()
-	user := new(User)
-	user.Name = "martin"
-	user.Password = "121212"
-	user.Phone = "15813807799"
-	user.Total = 1
-	user.Win = 1
 
-	a, err := o.Insert(user)
-	fmt.Println("a", a)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-	return*/
-
-	result := RegistUser("marfftin", "355", "15581368077699")
-	fmt.Println("------------")
+	result := RegistUser("martin", "123456")
 	fmt.Println(result)
-	fmt.Println("-------***********-----")
 
-	check := CheckPassword("marfftin", "355")
+	check := CheckPassword("martin", "123456")
 	fmt.Println(check)
 
 	return
 }
 
-func RegistUser(name string, password string, phone string) string {
+func RegistUser(name string, password string) string {
 	o := orm.NewOrm()
 
 	//验证合法性
@@ -156,21 +133,11 @@ func RegistUser(name string, password string, phone string) string {
 	if err != orm.ErrNoRows {
 		return "exist such name"
 	}
-	err = qs.Filter("Phone", phone).One(&u)
-	if err != orm.ErrNoRows {
-		return "exist such phone"
-	}
 	user := new(User)
 	user.Name = name
 	user.Password = password
-	user.Phone = phone
 	o.Insert(user)
 	return "success"
-	//一个电话只能注册一次
-	//一个名字只能注册一次
-	//	o:=orm.NewOrm()
-	//qs:=o.QueryTable("user")
-	//	err:=qs.Filter().on
 }
 
 func CheckPassword(name string, password string) bool {
@@ -196,33 +163,4 @@ func GetAllUser() ([]*User, error) {
 	qs := o.QueryTable("user")
 	_, err := qs.All(&users)
 	return users, err
-}
-
-func AddTotalAndWin(name string, iswin bool) {
-	o := orm.NewOrm()
-	var u User
-	o.QueryTable("user").Filter("name", name).One(&u, "Total", "Win")
-	t := u.Total + 1
-	w := u.Win + 1
-	if iswin {
-		_, err := o.QueryTable("user").Filter("name", name).Update(orm.Params{
-			"total": t,
-			"win":   w,
-		})
-		if err != nil {
-			return
-		}
-
-	} else {
-		_, err := o.QueryTable("user").Filter("name", name).Update(orm.Params{
-			"total": t,
-		})
-		if err != nil {
-			return
-		}
-	}
-
-}
-func AddWin(name string) {
-
 }

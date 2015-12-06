@@ -1,3 +1,7 @@
 {{range .Blogs}}
-<a href="/admin/article/edit?id={{.Id}}">{{.Title}}</a><br>
+	{{if $.IsAdmin}}
+      <a href="/admin/article/edit?id={{.Id}}">{{.Title}}</a><br>
+      {{else if eq .Creator $.UserName}}
+      <a href="/admin/article/edit?id={{.Id}}">{{.Title}}</a><br>
+      {{end}}
 {{end}}

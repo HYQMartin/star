@@ -28,14 +28,41 @@
             }
 
             $.post("{{urlfor "LoginController.DoLogin"}}", {"name":name, "password": CryptoJS.MD5(password) + ''}, function(data){
-                if (data.length == 0) {
-                    window.location.href="/";
+                if (data == "admin login success" || data == "login success") {
+                    alert(data)
+                     window.location.href="/";
                 } else {
                     $("#err .header").html(data);
                     $("#err").show("fast");
                 }
             });
         }
+        function regist() {
+            var name = $("#name").val()
+            var password = $("#password").val()
+            if (name.length == 0) {
+                $("#err .header").html("username is blank");
+                $("#err").show("fast");
+                return false;
+            }
+
+            if (password.length == 0) {
+                $("#err .header").html("password is blank");
+                $("#err").show("fast");
+                return false;
+            }
+
+            $.post("/regist", {"name":name, "password": CryptoJS.MD5(password) + ''}, function(data){
+                if (data == "success") {
+                    alert(data)
+                     window.location.href="/";
+                } else {
+                    $("#err .header").html(data);
+                    $("#err").show("fast");
+                }
+            });
+        }
+
         $(function(){
             $("#name").keypress(function(e){
                 $("#err").hide("fast");
@@ -79,7 +106,7 @@
                 <div class="header"></div>
             </div>
             <a class="ui blue submit button" id="login" href="javascript:login();">Login</a>
-            <a class="ui blue submit button" id="regist" href="/regist">Regist</a> 
+            <a class="ui blue submit button" id="regist" href="javascript:regist();">Regist</a> 
         </div>
     </div>
 </body>
