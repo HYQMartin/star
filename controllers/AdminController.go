@@ -3,7 +3,7 @@ package controllers
 import (
 	"fmt"
 	"github.com/ulricqin/goutils/filetool"
-	"star/g"
+	// "star/g"
 	"star/models"
 	"star/models/blog"
 	"star/models/catalog"
@@ -12,7 +12,7 @@ import (
 
 //************************************************************************
 const (
-	CATALOG_IMG_DIR = "static/uploads/catalogs"
+	CATALOG_IMG_DIR = "static/upload/catalogs"
 )
 
 type CatalogController struct {
@@ -108,7 +108,7 @@ func (this *CatalogController) extractCatalog(imgMust bool) (*models.Catalog, er
 			return nil, err
 		}
 
-		if err == nil {
+		/*if err == nil {
 			o.ImgUrl = "/" + imgPath
 			if g.UseQiniu {
 				if addr, er := g.UploadFile(imgPath, imgPath); er != nil {
@@ -120,7 +120,7 @@ func (this *CatalogController) extractCatalog(imgMust bool) (*models.Catalog, er
 					filetool.Unlink(imgPath)
 				}
 			}
-		}
+		}*/
 	}
 
 	return o, nil
@@ -163,7 +163,7 @@ func (this *CatalogController) DoEdit() {
 		return
 	}
 
-	this.Redirect("/blog", 302)
+	this.Redirect("/", 302)
 
 }
 
@@ -184,7 +184,7 @@ func (this *CatalogController) DoAdd() {
 		return
 	}
 
-	this.Redirect("/blog", 302)
+	this.Redirect("/", 302)
 }
 
 //************************************************************************
@@ -224,6 +224,7 @@ func (this *ArticleController) Add() {
 }
 
 func (this *ArticleController) DoAdd() {
+	fmt.Println("88888888888888888")
 	title := this.GetString("title")
 	ident := this.GetString("ident")
 	keywords := this.GetString("keywords")
@@ -231,7 +232,10 @@ func (this *ArticleController) DoAdd() {
 	aType := this.GetIntWithDefault("type", -1)
 	status := this.GetIntWithDefault("status", -1)
 	content := this.GetString("content")
-
+	fmt.Println("--------------catalog_id-------------", catalog_id)
+	fmt.Println("----------aType-----------------", aType)
+	fmt.Println("------------status---------------", status)
+	fmt.Println("------------content---------------", content)
 	if catalog_id == -1 || aType == -1 || status == -1 {
 		this.Ctx.WriteString("catalog || type || status is illegal")
 		return
@@ -249,12 +253,17 @@ func (this *ArticleController) DoAdd() {
 	}
 
 	b := &models.Blog{Ident: ident, Title: title, Keywords: keywords, CatalogId: int64(catalog_id), Type: int8(aType), Status: int8(status), Creator: this.UserName}
-	_, err := blog.Save(b, content)
+	fmt.Println(b)
+	// fmt.Println("---------------------------", content)
+	this.Ctx.WriteString("success")
+	return
+	// 	return
+	// _, err := blog.Save(b, content)
 
-	if err != nil {
-		this.Ctx.WriteString(err.Error())
-		return
-	}
+	// if err != nil {
+	// 	this.Ctx.WriteString(err.Error())
+	// 	return
+	// }
 
 	this.JsStorage("deleteKey", "post/new")
 	this.Redirect("/catalog/"+cp.Ident, 302)
