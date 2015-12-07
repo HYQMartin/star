@@ -6,22 +6,31 @@
 <script src="/static/javascript/jstorage.min.js"></script>
 <script src="/static/javascript/app.min.js"></script>
 
-<form role="form" action="/admin/article/edit" method="post">
-    <input type="hidden" name="id" value="{{.Blog.Id}}">
+ <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <script type="text/javascript" charset="utf-8" src="/static/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/static/ueditor/ueditor.all.min.js"> </script>
+    <!--建议手动加在语言，避免在ie下有时因为加载语言失败导致编辑器加载失败-->
+    <!--这里加载的语言文件会覆盖你在配置项目里添加的语言类型，比如你在配置项目里配置的是英文，这里加载的中文，那最后就是中文-->
+    <script type="text/javascript" charset="utf-8" src="/static/ueditor/lang/zh-cn/zh-cn.js"></script>
+
+  
+
+<form role="form">
+    <input id="id" type="hidden" name="id" value="{{.Blog.Id}}">
     <div class="row form-group">
         <div class="col-xs-6">
-            <input type="text" class="form-control" placeholder="Enter Title" name="title" value="{{.Blog.Title}}">
+            <input id="title" type="text" class="form-control" placeholder="Enter Title" name="title" value="{{.Blog.Title}}">
         </div>
         <div class="col-xs-3">
-            <input type="text" class="form-control" placeholder="Enter Identity" name="ident" value="{{.Blog.Ident}}">
+            <input id="ident" type="text" class="form-control" placeholder="Enter Identity" name="ident" value="{{.Blog.Ident}}">
         </div>
         <div class="col-xs-3">
-            <input type="text" class="form-control" placeholder="Enter Keywords" name="keywords" value="{{.Blog.Keywords}}">
+            <input id="keywords" type="text" class="form-control" placeholder="Enter Keywords" name="keywords" value="{{.Blog.Keywords}}">
         </div>
     </div>
     <div class="row form-group">
         <div class="col-xs-4">
-            <select class="form-control" name="catalog_id">
+            <select id="catalog_id" class="form-control" name="catalog_id">
                 {{range .Catalogs}}
                 <option {{if eq .Id $.Blog.CatalogId}}selected{{end}} value="{{.Id}}">{{.Name}}</option>
                 {{end}}
@@ -29,7 +38,7 @@
 
         </div>
         <div class="col-xs-2">
-            <select class="form-control" name="type">
+            <select id="type" class="form-control" name="type">
                 <option {{if eq .Blog.Type 0}}selected{{end}} value="0">原创</option>
                 <option {{if eq .Blog.Type 1}}selected{{end}} value="1">翻译</option>
                 <option {{if eq .Blog.Type 2}}selected{{end}} value="2">转载</option>
@@ -37,75 +46,107 @@
 
         </div>
         <div class="col-xs-2">
-            <select class="form-control" name="status">
+            <select id="status" class="form-control" name="status">
                 <option {{if eq .Blog.Status 1}}selected{{end}} value="1">立即发布</option>
                 <option {{if eq .Blog.Status 0}}selected{{end}} value="0">保存草稿</option>
             </select>
         </div>
     </div>
 
-
-    <div class="markdown-editor"  data-preview-url="/api/markdown" data-savekey="post/edit">
-
-        <div class="form-group">
-            <div class="btn-toolbar md-toolbar" role="toolbar">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default md-btn" data-meta="preview"><i class="icon-eye-open"></i> 预览</button>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default md-btn" data-meta="image" data-placement="bottom"><i class="icon-picture"></i></button>
-                    <button type="button" class="btn btn-default md-btn" data-meta="code"><i class="icon-code"></i></button>
-                </div>
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default md-btn disabled" data-meta="undo"><div class="icon-rotate-left"></div></button>
-                    <button type="button" class="btn btn-default md-btn disabled" data-meta="redo"><i class="icon-rotate-right"></i></button>
-                </div>
-            </div>
-            <div class="md-textarea">
-                <textarea id="PostForm-Content" name="content" rows="5" class="form-control">{{.Content}}</textarea>
-            </div>
-        </div>
-        <div class="md-preview markdown" style="display:none;">
-        </div>
-
-        <script type="text/template" rel="image-popover-title">
-            插入图片
-            <a class="pull-right color-link" rel="image-upload" href="javascript:"><i class="icon-upload-alt"></i> 上传</a>
+    <div>
+        <script id="editor" type="text/plain" style="width:1024px;height:500px;" name="editor">
         </script>
+    </div>   
 
-        <script type="text/template" rel="image-popover-content">
-            <div class="md-image">
-                <form class="md-image-form" style="display:none;" action="/api/upload" data-dismiss="upload" enctype="multipart/form-data" method="POST">
-                    <div style="display:none" class="alert alert-danger alert-small" data-message="Upload Failed! Please retry."></div>
-                    <div style="display:none" class="alert alert-success alert-small">Upload Success!</div>
-                    <input type="hidden" name="type" value="image">
-                    <div class="form-group">
-                        <input class="form-control" type="text" disabled="disabled" rel="filename">
-                        <input style="width:0;height:0;position:fixed;top:9999px;left:9999px;" type="file" name="image">
-                    </div>
-                    <div class="form-group">
-                        <div class="text-center">
-                            <span class="btn-group">
-                                <button class="btn btn-default" type="button" rel="button">Select File</button>
-                                <button class="btn btn-default" type="submit">Upload Now</button>
-                            </span>
-                        </div>
-                    </div>
-                </form>
-                <div class="form-group">
-                    <input class="form-control" type="text" name="link" placeholder="Please enter image link">
-                </div>
-                <button class="btn btn-info btn-block" type="button" rel="image-insert">
-                    Insert
-                </button>
-            </div>
-        </script>
+    <button type="submit" class="btn btn-primary" onclick="editarticleSubmit();">提交</button>
 
-    </div>
+</form>  
+<script type="text/javascript">
+         var ue = UE.getEditor('editor');
+         ue.ready(function() {
+    //设置编辑器的内容
+    ue.setContent({{.Content}});
+  // ue.blur();
+});
+        
+        //  editor.setContent('欢迎使用ueditor')
+        // function setContent(isAppendTo) {
+        // var arr = [];
+        // arr.push("使用editor.setContent('欢迎使用ueditor')方法可以设置编辑器的内容");
+        // UE.getEditor('editor').setContent('欢迎使用ueditor', isAppendTo);
+        // alert(arr.join("\n"));
+        // }
 
-    <div class="md-preview markdown" style="display:none;">
-    </div>
+    function editarticleSubmit() {
+  
+        var content ="";
+        var id= $("#id").val()
+        var title = $("#title").val()
+        var ident = $("#ident").val()
+        var keywords = $("#keywords").val()
+        var catalog_id = $("#catalog_id").val()
+        var type = $("#type").val()
+        var status = $("#status").val()
+        content=(UE.getEditor('editor').getContent());
 
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+        if (id.length == 0) {
+            $("#err .header").html("id不能为空");
+            $("#err").show("fast");
+            return false;
+        }
+        if (title.length == 0) {
+            $("#err .header").html("title不能为空");
+            $("#err").show("fast");
+            return false;
+        }
+        if (ident.length == 0) {
+            $("#err .header").html("ident不能为空");
+            $("#err").show("fast");
+            return false;
+        }
+        if (keywords.length == 0) {
+            $("#err .header").html("keywords不能为空");
+            $("#err").show("fast");
+            return false;
+        }
+        if (catalog_id.length == 0) {
+            $("#err .header").html("catalog_id不能为空");
+            $("#err").show("fast");
+            return false;
+        }
+
+        if (type.length == 0) {
+            $("#err .header").html("type不能为空");
+            $("#err").show("fast");
+            return false;
+        }
+        if (status.length == 0) {
+            $("#err .header").html("status不能为空");
+            $("#err").show("fast");
+            return false;
+        }
+        if (content.length == 0) {
+            $("#err .header").html("content不能为空");
+            $("#err").show("fast");
+            return false;
+        }
+
+        $.post("/admin/article/edit", 
+            {"id":id,"title":title,"ident":ident,"keywords":keywords,"catalog_id":catalog_id,"type":type,"status":status,"content":content},
+            function(data){
+
+            if (data.length == 0) {
+               // window.location.href="/";
+            } else {
+               if(data=="success")
+               {
+                 alert("提交成功！")
+                 window.location.href="/catalog/share";
+                }
+            }
+        });
+    }
+
+</script>   
+
 

@@ -224,7 +224,6 @@ func (this *ArticleController) Add() {
 }
 
 func (this *ArticleController) DoAdd() {
-	fmt.Println("88888888888888888")
 	title := this.GetString("title")
 	ident := this.GetString("ident")
 	keywords := this.GetString("keywords")
@@ -232,10 +231,7 @@ func (this *ArticleController) DoAdd() {
 	aType := this.GetIntWithDefault("type", -1)
 	status := this.GetIntWithDefault("status", -1)
 	content := this.GetString("content")
-	fmt.Println("--------------catalog_id-------------", catalog_id)
-	fmt.Println("----------aType-----------------", aType)
-	fmt.Println("------------status---------------", status)
-	fmt.Println("------------content---------------", content)
+
 	if catalog_id == -1 || aType == -1 || status == -1 {
 		this.Ctx.WriteString("catalog || type || status is illegal")
 		return
@@ -254,19 +250,18 @@ func (this *ArticleController) DoAdd() {
 
 	b := &models.Blog{Ident: ident, Title: title, Keywords: keywords, CatalogId: int64(catalog_id), Type: int8(aType), Status: int8(status), Creator: this.UserName}
 	fmt.Println(b)
-	// fmt.Println("---------------------------", content)
-	this.Ctx.WriteString("success")
-	return
-	// 	return
-	// _, err := blog.Save(b, content)
 
-	// if err != nil {
-	// 	this.Ctx.WriteString(err.Error())
-	// 	return
-	// }
+	_, err := blog.Save(b, content)
+
+	if err != nil {
+		this.Ctx.WriteString(err.Error())
+		return
+	}
 
 	this.JsStorage("deleteKey", "post/new")
 	this.Redirect("/catalog/"+cp.Ident, 302)
+	this.Ctx.WriteString("success")
+	return
 
 }
 
@@ -347,9 +342,10 @@ func (this *ArticleController) DoEdit() {
 		this.Ctx.WriteString(err.Error())
 		return
 	}
-
+	this.Ctx.WriteString("success")
 	this.JsStorage("deleteKey", "post/edit")
 	this.Redirect("/catalog/"+cp.Ident, 302)
+	return
 }
 
 func (this *ArticleController) Del() {

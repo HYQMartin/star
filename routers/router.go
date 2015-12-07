@@ -2,6 +2,7 @@ package routers
 
 import (
 	"github.com/astaxie/beego"
+	"net/http"
 	"star/controllers"
 )
 
@@ -62,5 +63,8 @@ func init() {
 	beego.Router("/admin/article/edit", &controllers.ArticleController{}, "get:Edit;post:DoEdit")
 	beego.Router("/admin/article/del", &controllers.ArticleController{}, "get:Del")
 	beego.Router("/admin/article/draft", &controllers.ArticleController{}, "get:Draft")
+
+	beego.Router("/ueditor/go/controller", &controllers.UeditorController{})
+	http.Handle("/static/", http.FileServer(http.Dir(".")))
 
 }

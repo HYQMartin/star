@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"star/g"
+	// "star/g"
 	"star/models/blog"
 	"star/models/catalog"
 )
@@ -30,7 +30,7 @@ func (this *MainController) Read() {
 	blog.Update(b, "")
 
 	this.Data["Blog"] = b
-	this.Data["Content"] = g.RenderMarkdown(blog.ReadBlogContent(b).Content)
+	this.Data["Content"] = blog.ReadBlogContent(b).Content
 	this.Data["PageTitle"] = b.Title
 	this.Data["Catalog"] = catalog.OneById(b.CatalogId)
 	this.Data["Addblog"] = `<a href="/catalog/share">返回</a>`
