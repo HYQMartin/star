@@ -15,7 +15,7 @@
     <div id="screen">
         <header id="header" class="mt20">
             <div class="fr">
-                <a href="/catalog/share">返回</a>
+                <a href="{{.ReturnPath}}">返回</a>
             </div>
             <div class="fl">
                 <a href="/" ><img id="logo-img" src="{{.BlogLogo}}" class="img-circle" width="90" height="90"></a>
@@ -33,7 +33,7 @@
             {{end}}
             <li class="{{if .IsPost}}active{{end}}"><a href="/admin/article/add">发表博文</a></li>
             <li class="{{if .IsDraft}}active{{end}}"><a href="/admin/article/draft">[草稿箱]</a></li>
-            <li><a href="/catalog/share">退出</a></li>
+            
         </ul>
         {{.LayoutContent}}
     </div>

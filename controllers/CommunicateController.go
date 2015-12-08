@@ -2,7 +2,7 @@ package controllers
 
 import (
 	// "github.com/astaxie/beego"
-	"star/g"
+	// "star/g"
 	"star/models/blog"
 	"star/models/catalog"
 )
@@ -31,10 +31,11 @@ func (this *CommunicateController) Read() {
 	blog.NUpdate(b, "")
 
 	this.Data["Blog"] = b
-	this.Data["Content"] = g.RenderMarkdown(blog.NReadBlogContent(b).Content)
+	this.Data["Content"] = blog.NReadBlogContent(b).Content
 	this.Data["PageTitle"] = b.Title
-	this.Data["Catalog"] = catalog.NOneById(b.CatalogId)
-	this.Data["Addblog"] = `<a href="/newemployee">返回</a>`
+	tmp := catalog.NOneById(b.CatalogId)
+	this.Data["Catalog"] = tmp
+	this.Data["Addblog"] = `<a href="/newemployee/catalog/` + tmp.Ident + `">返回</a>`
 	this.Layout = "main_newemployee/layout/default.html"
 	this.TplNames = "main_newemployee/article/read.html"
 }
@@ -60,7 +61,7 @@ func (this *CommunicateController) ListByCatalog() {
 	this.Data["Catalog"] = c
 	this.Data["Blogs"] = blogs
 	this.Data["PageTitle"] = c.Name
-	this.Data["Addblog"] = `<a href="/newemployee/admin/article/add">新增帖子</a>  <div><a href="/newemployee">  返回</a></div>`
+	this.Data["Addblog"] = `<a href="/newemployee/admin/article/add?cident=` + c.Ident + `">新增帖子</a>  <div><a href="/newemployee">  返回</a></div>`
 	this.Layout = "main_newemployee/layout/default.html"
 	this.TplNames = "main_newemployee/article/by_catalog.html"
 }

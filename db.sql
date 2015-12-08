@@ -96,21 +96,24 @@ CREATE TABLE IF NOT EXISTS `capabilities` (
 #training 表项创建
 CREATE TABLE IF NOT EXISTS `training_schedule_publish` (
    `id` bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
-   `title` varchar(255) NOT NULL,
+   `title` varchar(255) NOT NULL UNIQUE,
    `teacher` varchar(255) NOT NULL,
    `content` varchar(255),
    `description` varchar(255),
    `start_date` datetime,
    `room` varchar(255) NOT NULL,
-   `status` varchar(255)  NOT NULL
+   `status` varchar(255)  NOT NULL,
+   `created` datetime NOT NULL
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 
 CREATE TABLE IF NOT EXISTS `training_schedule_collect` (
    `id` bigint AUTO_INCREMENT NOT NULL PRIMARY KEY,
-   `title` varchar(255) NOT NULL,
+   `title` varchar(255) NOT NULL UNIQUE,
    `description` varchar(255) NOT NULL,
-   `fields` varchar(255) NOT NULL,
+   `understand` varchar(255) NOT NULL,
+   `expect_date` varchar(255) NOT NULL,
    `important_level` varchar(255) NOT NULL,
-   `expect_date` datetime
+   `fields` varchar(255)  NULL,
+   `created` datetime NOT NULL
 ) ENGINE=INNODB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;

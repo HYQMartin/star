@@ -2,12 +2,15 @@ package controllers
 
 import (
 	"fmt"
-	"github.com/ulricqin/goutils/filetool"
-	"star/g"
+	"io"
+	"os"
+	"path"
 	"star/models"
 	"star/models/blog"
 	"star/models/catalog"
-	"time"
+	"strings"
+
+	"code.google.com/p/go-uuid/uuid"
 )
 
 //************************************************************************
@@ -24,6 +27,7 @@ func (this *NCatalogController) Add() {
 		this.Ctx.WriteString("you are not the admin")
 		return
 	}
+	this.Data["ReturnPath"] = "/newemployee"
 	this.Data["IsAddCatalog"] = true
 	this.Layout = "main_newemployee/layout/admin.html"
 	this.TplNames = "main_newemployee/catalog/add.html"
@@ -45,7 +49,7 @@ func (this *NCatalogController) Edit() {
 		this.Ctx.WriteString(fmt.Sprintf("no such catalog_id:%d", id))
 		return
 	}
-
+	this.Data["ReturnPath"] = "/newemployee"
 	this.Data["Catalog"] = c
 	this.Layout = "main_newemployee/layout/admin.html"
 	this.TplNames = "main_newemployee/catalog/edit.html"
@@ -93,7 +97,7 @@ func (this *NCatalogController) extractCatalog(imgMust bool) (*models.Newemploye
 		return nil, fmt.Errorf("ident is blank")
 	}
 
-	_, header, err := this.GetFile("img")
+	/*_, header, err := this.GetFile("img")
 	if err != nil && imgMust {
 		return nil, err
 	}
@@ -121,6 +125,30 @@ func (this *NCatalogController) extractCatalog(imgMust bool) (*models.Newemploye
 				}
 			}
 		}
+	}*/
+	file, header, err := this.GetFile("img")
+	if err != nil && imgMust {
+		return nil, err
+	}
+	defer file.Close()
+
+	if err == nil {
+		filename := strings.Replace(uuid.NewUUID().String(), "-", "", -1) + path.Ext(header.Filename)
+		err = os.MkdirAll(path.Join("static", "upload"), 0775)
+		if err != nil {
+			this.Ctx.WriteString(err.Error())
+			return nil, err
+		}
+		outFile, err := os.Create(path.Join("static", "upload", filename))
+		if err != nil {
+			this.Ctx.WriteString(err.Error())
+			return nil, err
+		}
+		defer outFile.Close()
+		io.Copy(outFile, file)
+
+		imgPath := fmt.Sprintf("/static/upload/%s", filename)
+		o.ImgUrl = imgPath
 	}
 
 	return o, nil
@@ -210,12 +238,26 @@ type NArticleController struct {
 func (this *NArticleController) Draft() {
 	var blogs []*models.NewemployeeBlog
 	blog.NBlogs().Filter("Status", 0).All(&blogs)
+	cident := this.GetString("cident")
+	if cident != "" {
+		this.Data["ReturnPath"] = "/newemployee/catalog/" + cident
+	} else {
+		this.Data["ReturnPath"] = "/newemployee"
+	}
+
 	this.Data["Blogs"] = blogs
 	this.Layout = "main_newemployee/layout/admin.html"
 	this.TplNames = "main_newemployee/article/draft.html"
 }
 
 func (this *NArticleController) Add() {
+	cident := this.GetString("cident")
+	if cident != "" {
+		this.Data["RedirectPath"] = "/newemployee/catalog/" + cident
+	} else {
+		this.Data["RedirectPath"] = "/newemployee"
+	}
+	this.Data["ReturnPath"] = this.Data["RedirectPath"]
 	this.Data["Catalogs"] = catalog.NAll()
 	this.Data["IsPost"] = true
 	this.Layout = "main_newemployee/layout/admin.html"
@@ -224,6 +266,10 @@ func (this *NArticleController) Add() {
 }
 
 func (this *NArticleController) DoAdd() {
+	if !this.IsLogin && !this.IsAdmin {
+		this.Ctx.WriteString("you are not the admin or author")
+		return
+	}
 	title := this.GetString("title")
 	ident := this.GetString("ident")
 	keywords := this.GetString("keywords")
@@ -256,8 +302,10 @@ func (this *NArticleController) DoAdd() {
 		return
 	}
 
+	this.Ctx.WriteString("success")
 	this.JsStorage("deleteKey", "post/new")
 	this.Redirect("/newemployee/catalog/"+cp.Ident, 302)
+	return
 
 }
 
@@ -279,12 +327,29 @@ func (this *NArticleController) Edit() {
 	}
 	this.Data["Content"] = blog.NReadBlogContent(b).Content
 	this.Data["Blog"] = b
-	this.Data["Catalogs"] = catalog.NAll()
+	tmp := catalog.NAll()
+	this.Data["Catalogs"] = tmp
+	p := ""
+	for _, v := range tmp {
+		if b.CatalogId == v.Id {
+			p = v.Ident
+		}
+	}
+	if p != "" {
+		this.Data["RedirectPath"] = "/newemployee/catalog/" + p
+	} else {
+		this.Data["RedirectPath"] = "/newemployee"
+	}
+	this.Data["ReturnPath"] = this.Data["RedirectPath"]
 	this.Layout = "main_newemployee/layout/admin.html"
 	this.TplNames = "main_newemployee/article/edit.html"
 }
 
 func (this *NArticleController) DoEdit() {
+	if !this.IsLogin && !this.IsAdmin {
+		this.Ctx.WriteString("you are not the admin or author")
+		return
+	}
 	id, err := this.GetInt("id")
 	if err != nil {
 		this.Ctx.WriteString("get param id fail")
@@ -338,8 +403,10 @@ func (this *NArticleController) DoEdit() {
 		return
 	}
 
+	this.Ctx.WriteString("success")
 	this.JsStorage("deleteKey", "post/edit")
 	this.Redirect("/newemployee/catalog/"+cp.Ident, 302)
+	return
 }
 
 func (this *NArticleController) Del() {

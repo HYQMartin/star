@@ -19,6 +19,7 @@ func main() {
 	//models.AddUser()
 	//models.AddTotalAndWin("martin", true)
 	g.InitEnv()
+
 	// models.AddTrainingSchedulePublishs()
 	// models.AddTrainingScheduleCollects()
 	//go controllers.GetCapabilityFromMysqlPerHour()//减少查询数据库

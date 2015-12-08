@@ -16,7 +16,7 @@
 
 <style type="text/css">
     $('#datetimepicker').datetimepicker({
-        format: 'yyyy-mm-dd hh:ii'
+        format: 'yyyy-MM-dd HH:mm:ss'
     });
     
 </style>
@@ -77,11 +77,85 @@
                if(data=="success")
                {
                 alert("提交成功！")
+                window.location.href="/training"
+                }else{
+                    alert(data)
                 }
             }
         });
     }
 
+    function collectSubmit() {
+
+        var title = $("#inputCollectTitle").val()
+        var desc = $("#inputCollectDesc").val()
+        var level=""
+        var expecttime=""
+        var important=""
+
+        if (title.length == 0) {
+            $("#err .header").html("课程名称不能为空");
+            $("#err").show("fast");
+            return false;
+        }
+        if (desc.length == 0) {
+            $("#err .header").html("了解内容不能为空");
+            $("#err").show("fast");
+            return false;
+        }
+
+        if ($('input[name="optionsRadiosUnderstand"]')[0].checked) {
+            level="空白（不了解）";
+        }
+        if ($('input[name="optionsRadiosUnderstand"]')[1].checked) {
+            level="了解";
+        }
+        if ($('input[name="optionsRadiosUnderstand"]')[2].checked) {
+            level="熟悉";
+        }
+        if ($('input[name="optionsRadiosUnderstand"]')[3].checked) {
+            level="精通";
+        }
+
+
+        if ($('input[name="optionsRadiosEmerg"]')[0].checked) {
+            expecttime="很紧急（一个星期内）";
+        }
+        if ($('input[name="optionsRadiosEmerg"]')[1].checked) {
+            expecttime="一般（半个月内）";
+        }
+        if ($('input[name="optionsRadiosEmerg"]')[2].checked) {
+            expecttime="不紧急（一个月内）";
+        }
+
+        if ($('input[name="optionsRadiosImportance"]')[0].checked) {
+            important="非常重要";
+        }
+        if ($('input[name="optionsRadiosImportance"]')[1].checked) {
+            important="重要";
+        }
+        if ($('input[name="optionsRadiosImportance"]')[2].checked) {
+            important="一般";
+        }
+
+        $.post("/training/collect", 
+            {"title":title,"desc":desc,"level":level,"expecttime":expecttime,"important":important},
+            function(data){
+
+            if (data.length == 0) {
+               // window.location.href="/";
+            } else {
+               if(data=="success")
+               {
+                alert("提交成功！")
+                 window.location.href="/training"
+                }else{
+                    alert(data)
+                }
+
+            }
+        });
+    }
 </script>
 
 <div class="container-fluid">
@@ -99,6 +173,11 @@
                     <li >
                         <a href="#collect" data-toggle="tab">课程收集</a>
                     </li>
+                    {{if .IsAdmin}}
+                    <li >
+                        <a href="#collectall" data-toggle="tab">收集汇总</a>
+                    </li>
+                    {{end}}
                     {{if .IsAdmin}}
                     <li>
                         <a href="#publish" data-toggle="tab">课程发布</a>
@@ -137,11 +216,12 @@
                     <div class="span2" style="float:left;width:20%;margin-left:35px">
                         <ul class="nav nav-list">
                             <li class="nav-header">
-                                <b>主要内容</b>
+                                <b> </b>
                             </li>
                             <li class="active">
-                                <a href="#">首页</a>
+                                <a href="#"> </a>
                             </li>
+                        <!--
                             <li>
                                 <a href="#">库</a>
                             </li>
@@ -162,6 +242,7 @@
                             <li>
                                 <a href="#">帮助</a>
                             </li>
+                            -->
                         </ul>
                     </div>
 
@@ -216,6 +297,9 @@
                                                         <th>
                                                             状    态
                                                         </th>
+                                                        <th>
+                                                            发布时间
+                                                        </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -242,6 +326,9 @@
                                                         <td>
                                                             {{.Status}}
                                                         </td>
+                                                        <td>
+                                                            {{.Created}}
+                                                        </td>
                                                     </tr>
                                                    {{end}}  
                                                 </tbody>
@@ -255,8 +342,10 @@
                         <!-- tab second
                              "schedule collect" 
                         -->
+                        {{if .IsAdmin}}
                         <div class="tab-pane" id="collect">
                             <div class="span6" style="float:left;width:60%">
+                            
                                 <ol class="thumbnails">
                                     <li class="span4">
                                         <div class="thumbnail">
@@ -265,7 +354,7 @@
                                                     <h4>请在下面的输入框中输入您的培训标题：</h4>
                                                 </div>
                                                 <div class="radio">
-                                                    <input type="text" class="form-control" id="inputTitle" placeholder="请给你的培训起一个标题">
+                                                    <input type="text" class="form-control" id="inputCollectTitle" placeholder="请给你的培训起一个标题">
                                                 </div>
                                             </div>
                                         </div>
@@ -277,7 +366,7 @@
                                                     <h4>请在下面的输入框中输入这个培训您想了解的方面：</h4>
                                                 </div>
                                                 <div class="radio">
-                                                     <textarea class="form-control" style="width:100%" rows="3"></textarea>
+                                                     <textarea id="inputCollectDesc" class="form-control" style="width:100%" rows="3"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -291,25 +380,25 @@
                                                 </div>
                                                 <div class="radio">
                                                   <label>
-                                                    <input type="radio" name="optionsRadiosUnderstand" id="optionsRadios1" value="option1" checked>
+                                                    <input  type="radio" name="optionsRadiosUnderstand" id="collectLevel1" vlue="op1" checked>
                                                     空白（不了解）
                                                   </label>
                                                 </div>
                                                 <div class="radio">
                                                   <label>
-                                                    <input type="radio" name="optionsRadiosUnderstand" id="optionsRadios2" value="option2">
+                                                    <input type="radio" name="optionsRadiosUnderstand" id="collectLevel2" vlue="op2">
                                                     了解
                                                   </label>
                                                 </div>
                                                 <div class="radio">
                                                   <label>
-                                                    <input type="radio" name="optionsRadiosUnderstand" id="optionsRadios3" value="option3" disabled>
+                                                    <input type="radio" name="optionsRadiosUnderstand" id="collectLevel3" vlue="op3">
                                                     熟悉
                                                   </label>
                                                 </div>
                                                 <div class="radio">
                                                   <label>
-                                                    <input type="radio" name="optionsRadiosUnderstand" id="optionsRadios3" value="option3" disabled>
+                                                    <input type="radio" name="optionsRadiosUnderstand" id="collectLevel4" vlue="op4">
                                                     精通
                                                   </label>
                                                 </div>
@@ -324,19 +413,19 @@
                                                 </div>
                                                 <div class="radio">
                                                   <label>
-                                                    <input type="radio" name="optionsRadiosEmerg" id="optionsRadios1" value="option1" checked>
+                                                    <input type="radio" name="optionsRadiosEmerg" id="collectExpectTime1"  checked>
                                                     很紧急（一个星期内）
                                                   </label>
                                                 </div>
                                                 <div class="radio">
                                                   <label>
-                                                    <input type="radio" name="optionsRadiosEmerg" id="optionsRadios2" value="option2">
+                                                    <input type="radio" name="optionsRadiosEmerg" id="collectExpectTime2" >
                                                     一般（半个月内）
                                                   </label>
                                                 </div>
-                                                <div class="radio disabled">
+                                                <div class="radio">
                                                   <label>
-                                                    <input type="radio" name="optionsRadiosEmerg" id="optionsRadios3" value="option3" disabled>
+                                                    <input type="radio" name="optionsRadiosEmerg" id="collectExpectTime3" >
                                                     不紧急（一个月内）
                                                   </label>
                                                 </div>
@@ -351,19 +440,19 @@
                                                 </div>
                                                 <div class="radio">
                                                   <label>
-                                                    <input type="radio" name="optionsRadiosImportance" id="optionsRadios1" value="option1" checked>
+                                                    <input type="radio" name="optionsRadiosImportance" id="collectImportant1"  checked>
                                                     非常重要
                                                   </label>
                                                 </div>
                                                 <div class="radio">
                                                   <label>
-                                                    <input type="radio" name="optionsRadiosImportance" id="optionsRadios2" value="option2">
+                                                    <input type="radio" name="optionsRadiosImportance" id="collectImportant2" >
                                                     重要
                                                   </label>
                                                 </div>
-                                                <div class="radio disabled">
+                                                <div class="radio">
                                                   <label>
-                                                    <input type="radio" name="optionsRadiosImportance" id="optionsRadios3" value="option3" disabled>
+                                                    <input type="radio" name="optionsRadiosImportance" id="collectImportant3" >
                                                     一般
                                                   </label>
                                                 </div>
@@ -375,15 +464,103 @@
                                             <div class="caption">
                                                 <img alt="300x180" src="static/img/collect.jpg" />
                                                 <div class="caption">
-                                                    <p>
-                                                        <a class="btn btn-primary" href="#">取消</a>
-                                                        <a class="btn" href="#">提交</a>
-                                                    </p>
+                                                    <!--p>
+                                                        <a class="btn btn-primary" href="/training">取消1</a>
+                                                        <a class="btn btn-primary" onclick="collectSubmit();">提交1</a>
+                                                    </p-->
                                                 </div>
                                             </div>      
                                         </div>
                                     </li>
+
+                                                <div class="col-sm-2">
+                                                     <button class="btn" style="width:120px" href="/training">取消</button>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                     <button type="submit" class="btn" style="width:120px" onclick="collectSubmit();">提交</button>
+                                                </div>
+
                                 </ol>
+                                
+                            </div>
+                        </div>
+                        {{end}}
+
+                        <div class="tab-pane" id="collectall">
+                            <div class="span6" style="float:left;width:60%">
+                                <div class="row-fluid" style="float:right">
+                                    <!--
+                                    <div class="span8">
+                                        <img alt="1000x100" src="static/img/training-search.png" />
+                                    </div>
+                                    -->
+                                    <div class="span4">
+                                        <form class="form-search">
+                                            <input class="input-medium search-query" type="text" /> <button type="submit" class="btn">查找</button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div style="clear:both"></div>
+                                <ul class="thumbnails">
+                                    <li class="span4">
+                                        <div class="thumbnail">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            申请培训标题
+                                                        </th>
+                                                        <th>
+                                                            详细介绍
+                                                        </th>
+                                                        <th>
+                                                            掌握程度
+                                                        </th>
+                                                         <th>
+                                                            紧急程度
+                                                        </th>
+                                                        <th>
+                                                            重要程度
+                                                        </th>
+                                                        <th>
+                                                            领域
+                                                        </th>
+                                                        <th>
+                                                            申请时间
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                   {{range .CollectTable}}
+                                                    <tr>
+                                                        <td>
+                                                            {{.Title}}
+                                                        </td>
+                                                        <td>
+                                                            {{.Description}}
+                                                        </td>
+                                                        <td>
+                                                            {{.Understand}}
+                                                        </td>
+                                                        <td>
+                                                            {{.ExpectDate}}
+                                                        </td>
+                                                        <td>
+                                                            {{.ImportantLevel}}
+                                                        </td>
+                                                        <td>
+                                                            {{.Fields}}
+                                                        </td>
+                                                        <td>
+                                                            {{.Created}}
+                                                        </td>
+                                                    </tr>
+                                                   {{end}}  
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
 
@@ -417,7 +594,7 @@
                                             <div class="form-group">
                                                 <label for="inputTime" class="col-sm-2 control-label">开课时间</label>
                                                 <div class="col-sm-5">
-                                                  <input type="text" value="2015-05-15 21:05" id="inputTime">
+                                                  <input type="text" value="2015-05-15 21:05:00" id="inputTime">
                                                 </div>
                                             </div>
                                             

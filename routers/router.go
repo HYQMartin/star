@@ -18,6 +18,7 @@ func init() {
 	/* 培训交流 */
 	beego.Router("/training", &controllers.TrainingController{})
 	//
+	beego.Router("/training/collect", &controllers.TrainingCollectController{})
 	beego.Router("/training/publish", &controllers.TrainingPublishController{})
 	//beego.Router("/training/collect", &controllers.TrainingController{})
 

@@ -14,15 +14,18 @@ type TrainingSchedulePublish struct {
 	StartDate   time.Time
 	Room        string
 	Status      string
+	Created     time.Time `orm:"auto_now_add;type(datetime)"`
 }
 
 type TrainingScheduleCollect struct {
 	Id             int64
 	Title          string
 	Description    string
-	Fields         string
+	Understand     string
+	ExpectDate     string
 	ImportantLevel string
-	ExpectDate     time.Time
+	Fields         string
+	Created        time.Time `orm:"auto_now_add;type(datetime)"`
 }
 
 func AddTrainingSchedulePublishs() {
@@ -53,30 +56,45 @@ func AddTrainingSchedulePublish(title, teacher, content, description, room, stat
 	t.StartDate = startdate
 	t.Room = room
 	t.Status = status
-	o.Insert(t)
+	_, err = o.Insert(t)
+	if err != nil {
+		return err.Error()
+	}
+
 	return "success"
 }
 
 func AddTrainingScheduleCollects() {
 
-	AddTrainingScheduleCollect("申请课程 linux 基础", "linux,bash,kernel", "linux,bash,kernel", "", time.Now())
-	AddTrainingScheduleCollect("申请课程 makefile 基础", "makefile", "makefile", "", time.Now())
-	AddTrainingScheduleCollect("申请课程 C 基础", "C 基础", "C ", "", time.Now())
+	AddTrainingScheduleCollect("申请课程 linux 基础", "linux,bash,kernel", "不了解", "这个月", "紧急", "docker")
 }
 
-func AddTrainingScheduleCollect(title, description, fields, level string, expecttime time.Time) string {
+func AddTrainingScheduleCollect(title, description, understand, expectdate, important, fields string) string {
 	o := orm.NewOrm()
 
 	//验证合法性
+	qs := o.QueryTable("training_schedule_collect")
+
+	var c TrainingScheduleCollect
+
+	err := qs.Filter("Title", title).One(&c)
+	if err != orm.ErrNoRows {
+		return "exist such Title"
+	}
 
 	t := new(TrainingScheduleCollect)
 	t.Title = title
 	t.Description = description
+	t.Understand = understand
+	t.ExpectDate = expectdate
+	t.ImportantLevel = important
 	t.Fields = fields
-	t.ImportantLevel = level
-	t.ExpectDate = expecttime
 
-	o.Insert(t)
+	_, err = o.Insert(t)
+	if err != nil {
+		return err.Error()
+	}
+
 	return "success"
 }
 

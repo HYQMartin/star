@@ -14,7 +14,7 @@
                     {{.Resume}}
                     {{if $.IsAdmin}}
                     <div>
-                    (<a style="display:inline;" href="/admin/catalog/edit?id={{.Id}}">Edit</a><span class="cut-line">|</span><a style="display:inline;" href="/admin/catalog/del?id={{.Id}}">Del</a>)
+                    (<a style="display:inline;" href="/admin/catalog/edit?id={{.Id}}&cident={{.Ident}}">Edit</a><span class="cut-line">|</span><a style="display:inline;" href="/admin/catalog/del?id={{.Id}}">Del</a>)
                     </div>
                     {{end}}
                 </p>

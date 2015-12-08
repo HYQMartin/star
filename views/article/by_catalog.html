@@ -9,13 +9,13 @@
     <div class="entry-meta">
       <span>{{.Creator}} 发表于：{{dateformat .Created "2006-01-02 15:04:05"}}</span>
       {{if $.IsAdmin}}
-      (<a href="/admin/article/edit?id={{.Id}}">Edit</a>
+      (<a href="/admin/article/edit?id={{.Id}}&cident={{$.CIdent}}">Edit</a>
       <span class="cut-line">|</span>
-      <a href="/admin/article/del?id={{.Id}}">Del</a>)
+      <a href="/admin/article/del?id={{.Id}}&cident={{$.CIdent}}">Del</a>)
       {{else if eq .Creator $.UserName}}
-      (<a href="/admin/article/edit?id={{.Id}}">Edit</a>
+      (<a href="/admin/article/edit?id={{.Id}}&cident={{$.CIdent}}">Edit</a>
       <span class="cut-line">|</span>
-      <a href="/admin/article/del?id={{.Id}}">Del</a>)
+      <a href="/admin/article/del?id={{.Id}}&cident={{$.CIdent}}">Del</a>)
       {{end}}
     </div>
     <a class="entry-snippet" itemprop="description" href="/article/{{.Ident}}">

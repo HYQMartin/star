@@ -2,12 +2,15 @@ package controllers
 
 import (
 	"fmt"
-	"github.com/ulricqin/goutils/filetool"
-	// "star/g"
+	"io"
+	"os"
+	"path"
 	"star/models"
 	"star/models/blog"
 	"star/models/catalog"
-	"time"
+	"strings"
+
+	"code.google.com/p/go-uuid/uuid"
 )
 
 //************************************************************************
@@ -24,6 +27,17 @@ func (this *CatalogController) Add() {
 		this.Ctx.WriteString("you are not the admin")
 		return
 	}
+	var p string
+	cident := this.GetString("cident")
+	for i := 0; i < len(FIXPAGE); i++ {
+		if cident == FIXPAGE[i] {
+			p = "/"
+		}
+	}
+	if p == "" {
+		p = "/catalog/" + cident
+	}
+	this.Data["ReturnPath"] = p
 	this.Data["IsAddCatalog"] = true
 	this.Layout = "layout/admin.html"
 	this.TplNames = "catalog/add.html"
@@ -34,6 +48,7 @@ func (this *CatalogController) Edit() {
 		this.Ctx.WriteString("you are not the admin")
 		return
 	}
+
 	id, err := this.GetInt("id")
 	if err != nil {
 		this.Ctx.WriteString("param id should be digit")
@@ -46,6 +61,17 @@ func (this *CatalogController) Edit() {
 		return
 	}
 
+	var p string
+	cident := this.GetString("cident")
+	for i := 0; i < len(FIXPAGE); i++ {
+		if cident == FIXPAGE[i] {
+			p = "/"
+		}
+	}
+	if p == "" {
+		p = "/catalog/" + cident
+	}
+	this.Data["ReturnPath"] = p
 	this.Data["Catalog"] = c
 	this.Layout = "layout/admin.html"
 	this.TplNames = "catalog/edit.html"
@@ -93,34 +119,29 @@ func (this *CatalogController) extractCatalog(imgMust bool) (*models.Catalog, er
 		return nil, fmt.Errorf("ident is blank")
 	}
 
-	_, header, err := this.GetFile("img")
+	file, header, err := this.GetFile("img")
 	if err != nil && imgMust {
 		return nil, err
 	}
+	defer file.Close()
 
 	if err == nil {
-		ext := filetool.Ext(header.Filename)
-		imgPath := fmt.Sprintf("%s/%s_%d%s", CATALOG_IMG_DIR, o.Ident, time.Now().Unix(), ext)
-
-		filetool.InsureDir(CATALOG_IMG_DIR)
-		err = this.SaveToFile("img", imgPath)
-		if err != nil && imgMust {
+		filename := strings.Replace(uuid.NewUUID().String(), "-", "", -1) + path.Ext(header.Filename)
+		err = os.MkdirAll(path.Join("static", "upload"), 0775)
+		if err != nil {
+			this.Ctx.WriteString(err.Error())
 			return nil, err
 		}
+		outFile, err := os.Create(path.Join("static", "upload", filename))
+		if err != nil {
+			this.Ctx.WriteString(err.Error())
+			return nil, err
+		}
+		defer outFile.Close()
+		io.Copy(outFile, file)
 
-		/*if err == nil {
-			o.ImgUrl = "/" + imgPath
-			if g.UseQiniu {
-				if addr, er := g.UploadFile(imgPath, imgPath); er != nil {
-					if imgMust {
-						return nil, er
-					}
-				} else {
-					o.ImgUrl = addr
-					filetool.Unlink(imgPath)
-				}
-			}
-		}*/
+		imgPath := fmt.Sprintf("/static/upload/%s", filename)
+		o.ImgUrl = imgPath
 	}
 
 	return o, nil
@@ -210,20 +231,52 @@ type ArticleController struct {
 func (this *ArticleController) Draft() {
 	var blogs []*models.Blog
 	blog.Blogs().Filter("Status", 0).All(&blogs)
+	this.Data["ReturnPath"] = "/catalog/share"
 	this.Data["Blogs"] = blogs
 	this.Layout = "layout/admin.html"
 	this.TplNames = "article/draft.html"
 }
 
 func (this *ArticleController) Add() {
-	this.Data["Catalogs"] = catalog.All()
+	tmp := catalog.All()
+	t := make([]*models.Catalog, 0)
+	flag := true
+	for i := 0; i < len(tmp); i++ {
+		for j := 0; j < len(FIXPAGE); j++ {
+			if tmp[i].Ident == FIXPAGE[j] {
+				flag = false
+				break
+			}
+		}
+		if flag {
+			t = append(t, tmp[i])
+		}
+		flag = true
+	}
+	this.Data["Catalogs"] = t
 	this.Data["IsPost"] = true
+
+	var p string
+	cident := this.GetString("cident")
+	for i := 0; i < len(FIXPAGE); i++ {
+		if cident == FIXPAGE[i] {
+			p = "/"
+		}
+	}
+	if p == "" {
+		p = "/catalog/" + cident
+	}
+	this.Data["ReturnPath"] = p
 	this.Layout = "layout/admin.html"
 	this.TplNames = "article/add.html"
 	this.JsStorage("deleteKey", "post/new")
 }
 
 func (this *ArticleController) DoAdd() {
+	if !this.IsLogin && !this.IsAdmin {
+		this.Ctx.WriteString("you are not the admin or author")
+		return
+	}
 	title := this.GetString("title")
 	ident := this.GetString("ident")
 	keywords := this.GetString("keywords")
@@ -249,7 +302,6 @@ func (this *ArticleController) DoAdd() {
 	}
 
 	b := &models.Blog{Ident: ident, Title: title, Keywords: keywords, CatalogId: int64(catalog_id), Type: int8(aType), Status: int8(status), Creator: this.UserName}
-	fmt.Println(b)
 
 	_, err := blog.Save(b, content)
 
@@ -281,15 +333,46 @@ func (this *ArticleController) Edit() {
 		this.Ctx.WriteString("you are not author or admin")
 		return
 	}
+	var p string
+	cident := this.GetString("cident")
+	for i := 0; i < len(FIXPAGE); i++ {
+		if cident == FIXPAGE[i] {
+			p = "/"
+		}
+	}
+	if p == "" {
+		p = "/catalog/" + cident
+	}
+	this.Data["ReturnPath"] = p
 
 	this.Data["Content"] = blog.ReadBlogContent(b).Content
 	this.Data["Blog"] = b
-	this.Data["Catalogs"] = catalog.All()
+
+	tmp := catalog.All()
+	t := make([]*models.Catalog, 0)
+	flag := true
+	for i := 0; i < len(tmp); i++ {
+		for j := 0; j < len(FIXPAGE); j++ {
+			if tmp[i].Ident == FIXPAGE[j] {
+				flag = false
+				break
+			}
+		}
+		if flag {
+			t = append(t, tmp[i])
+		}
+		flag = true
+	}
+	this.Data["Catalogs"] = t
 	this.Layout = "layout/admin.html"
 	this.TplNames = "article/edit.html"
 }
 
 func (this *ArticleController) DoEdit() {
+	if !this.IsLogin && !this.IsAdmin {
+		this.Ctx.WriteString("you are not the admin or author")
+		return
+	}
 	id, err := this.GetInt("id")
 	if err != nil {
 		this.Ctx.WriteString("get param id fail")
@@ -369,8 +452,9 @@ func (this *ArticleController) Del() {
 		this.Ctx.WriteString(err.Error())
 		return
 	}
-
-	this.Ctx.WriteString("del success")
+	cident := this.GetString("cident")
+	this.Redirect("/catalog/"+cident, 302)
+	// this.Ctx.WriteString("del success")
 	return
 }
 
