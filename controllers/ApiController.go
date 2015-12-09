@@ -52,7 +52,7 @@ func (this *BaseController) AssignIsAdmin() {
 		this.IsAdmin = true
 		this.IsLogin = true
 		this.UserName = "管理员"
-		fmt.Println("*******************登录成功，username=", this.UserName)
+		// fmt.Println("*******************登录成功，username=", this.UserName)
 	} else {
 		this.IsAdmin = false
 		if models.CheckPassword(name, password) {
