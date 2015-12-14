@@ -1,0 +1,241 @@
+/*
+SQLyog Job Agent v11.27 (32 bit) Copyright(c) Webyog Inc. All Rights Reserved.
+
+
+MySQL - 5.1.73 : Database - star
+*********************************************************************
+*/
+
+/*!40101 SET NAMES utf8 */;
+
+/*!40101 SET SQL_MODE=''*/;
+
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`star` /*!40100 DEFAULT CHARACTER SET latin1 */;
+
+USE `star`;
+
+/*Table structure for table `bb_blog` */
+
+DROP TABLE IF EXISTS `bb_blog`;
+
+CREATE TABLE `bb_blog` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ident` varchar(255) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `keywords` varchar(255) DEFAULT NULL,
+  `catalog_id` bigint(20) NOT NULL,
+  `blog_content_id` bigint(20) NOT NULL,
+  `blog_content_last_update` bigint(20) NOT NULL,
+  `type` tinyint(4) NOT NULL,
+  `status` tinyint(4) NOT NULL,
+  `views` bigint(20) NOT NULL,
+  `creator` varchar(255) NOT NULL,
+  `created` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ident` (`ident`),
+  UNIQUE KEY `blog_content_id` (`blog_content_id`),
+  KEY `bb_blog_catalog_id` (`catalog_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+
+/*Data for the table `bb_blog` */
+
+insert  into `bb_blog` values (3,'testdraft','测试草稿','testdraft',6,14,1449333787,0,1,0,'h00346577','2015-12-06 00:43:07'),(4,'111111','测试发表博文111111111','111111',8,15,1449333850,0,1,6,'h00346577','2015-12-06 00:43:58'),(8,'yyyyyy','yyyyyyy','yyyyy',8,19,1449543517,0,1,38,'管理员','2015-12-07 22:57:08'),(9,'mmmmm','mmmmmmm','mmmmm',8,20,1449563436,0,1,6,'管理员','2015-12-08 15:40:00'),(10,'new1','新增测试博文1','new1',8,21,1449733866,0,1,2,'管理员','2015-12-10 15:51:06'),(11,'new2','新增测试博文2','new2',8,22,1449733912,0,1,4,'管理员','2015-12-10 15:51:52');
+
+/*Table structure for table `bb_blog_content` */
+
+DROP TABLE IF EXISTS `bb_blog_content`;
+
+CREATE TABLE `bb_blog_content` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `content` longtext NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
+
+/*Data for the table `bb_blog_content` */
+
+insert  into `bb_blog_content` values (3,'![](/static/uploads/editor/1447750151.jpg)\r\n\r\n这是测试page'),(4,'![](/static/uploads/editor/1447750254.jpg)\r\n娃哈哈'),(8,'## Beego\r\n\r\n[![Build Status](https://drone.io/github.com/astaxie/beego/status.png)](https://drone.io/github.com/astaxie/beego/latest)\r\n[![GoDoc](http://godoc.org/github.com/astaxie/beego?status.svg)](http://godoc.org/github.com/astaxie/beego)\r\n\r\nbeego is an open-source, high-performance, modular, full-stack web framework.\r\n\r\nMore info [beego.me](http://beego.me)\r\n\r\n## Installation\r\n\r\n    go get github.com/astaxie/beego\r\n\r\n## Features\r\n\r\n* RESTful support\r\n* MVC architecture\r\n* Modularity\r\n* Auto API documents\r\n* Annotation router\r\n* Namespace\r\n* Powerful development tools\r\n* Full stack for Web & API\r\n\r\n## Documentation\r\n\r\n* [English](http://beego.me/docs/intro/)\r\n* [中文文档](http://beego.me/docs/intro/)\r\n\r\n## Community\r\n\r\n* [http://beego.me/community](http://beego.me/community)\r\n\r\n## LICENSE\r\n\r\nbeego is licensed under the Apache Licence, Version 2.0\r\n(http://www.apache.org/licenses/LICENSE-2.0.html).\r\n'),(10,'------------------------------------------------------\r\n------------------------------------------------------\r\n------------------------------------------------------\r\n------------------------------------------------------\r\n------------------------------------------------------\r\n------------------------------------------------------'),(11,'\r\n```go\r\n<html>\r\n\r\n```\r\n<html>'),(14,'ffffffffffffffffffff'),(15,'ffffffffffffffffffffffffffffeeeeeeeeee'),(19,'<blockquote style=\"text-align: left;\"><table><tbody><tr class=\"firstRow\"><td width=\"315\" valign=\"top\" style=\"word-break: break-all;\"><span style=\"font-size: 36px;\">a</span></td><td valign=\"top\" style=\"word-break: break-all;\" width=\"234\"><span style=\"font-size: 36px; text-decoration: underline; background-color: rgb(227, 108, 9);\">aaaaaaaaaaaaaaaa2015-12-0723:32:58</span></td><td width=\"315\" valign=\"top\">aaaaaaaaaaaaa</td></tr><tr><td width=\"315\" valign=\"top\">aaaaaaaaa</td><td valign=\"top\" style=\"word-break: break-all;\" width=\"234\"><span style=\"background-color: rgb(227, 108, 9);\">a</span></td><td width=\"315\" valign=\"top\">aaaaaaaaaaaa</td></tr></tbody></table><img src=\"http://img.baidu.com/hi/jx2/j_0015.gif\"/><img src=\"http://img.baidu.com/hi/jx2/j_0017.gif\"/><img src=\"http://img.baidu.com/hi/jx2/j_0036.gif\"/></blockquote><p style=\"text-align: left;\">afff<span style=\"background-color: rgb(15, 36, 62);\">ffffff<br style=\"text-align: left;\"/></span></p><p><img src=\"http://localhost:8888/static/upload/84dc2c6f9d5711e59e59286ed488f92d.jpg\" title=\"\" alt=\"Koala.jpg\"/></p><p style=\"text-align: left;\"><span style=\"background-color: rgb(15, 36, 62);\">arefeffff</span></p>'),(20,'<p>mmmmmmmmmmmmmmmrgserg</p><p>gwegeg</p>'),(21,'<p><img src=\"http://img.baidu.com/hi/jx2/j_0004.gif\"/><img src=\"http://img.baidu.com/hi/jx2/j_0072.gif\"/><img src=\"http://img.baidu.com/hi/jx2/j_0080.gif\"/></p>'),(22,'<p>这是测试博文2...........</p>');
+
+/*Table structure for table `bb_catalog` */
+
+DROP TABLE IF EXISTS `bb_catalog`;
+
+CREATE TABLE `bb_catalog` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ident` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `resume` varchar(255) NOT NULL,
+  `display_order` int(11) NOT NULL,
+  `img_url` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ident` (`ident`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+
+/*Data for the table `bb_catalog` */
+
+insert  into `bb_catalog` values (4,'newemployee','新员工培养','新员工培养',96,'/static/upload/f1fe0eb29d8911e5b484286ed488f92d.jpg'),(6,'capability','能力地图','能力地图',100,'/static/upload/e4a8b1729d8911e5b484286ed488f92d.jpg'),(7,'training','培训交流','培训交流',99,'/static/upload/eaa621329d8911e5b484286ed488f92d.jpg'),(8,'share','总结分享','总结分享',95,'/static/upload/f6fdc9f29d8911e5b484286ed488f92d.jpg');
+
+/*Table structure for table `capabilities` */
+
+DROP TABLE IF EXISTS `capabilities`;
+
+CREATE TABLE `capabilities` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` varchar(255) NOT NULL,
+  `user_name` varchar(255) NOT NULL,
+  `capability_id` bigint(20) NOT NULL,
+  `level` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8;
+
+/*Data for the table `capabilities` */
+
+insert  into `capabilities` values (68,'h00346577','黄业钦',1,'了解',''),(69,'h00346577','黄业钦',2,'精通',''),(70,'h00346577','黄业钦',3,'熟悉',''),(71,'h00346577','黄业钦',4,'了解',''),(72,'h00346577','黄业钦',5,'了解',''),(73,'h00346577','黄业钦',6,'了解',''),(74,'h00346577','黄业钦',7,'了解',''),(75,'h00346577','黄业钦',8,'了解',''),(77,'222222','刘盼',0,'精通','11111111111'),(78,'1111111','刘盼',0,'精通','22222222222222'),(79,'11111111','刘盼',0,'不了解','11111111'),(80,'1','刘盼',0,'精通','111111'),(82,'1','刘盼',56,'不了解','444444444444');
+
+/*Table structure for table `capability_map` */
+
+DROP TABLE IF EXISTS `capability_map`;
+
+CREATE TABLE `capability_map` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `capability_id` bigint(20) NOT NULL,
+  `capability` varchar(255) NOT NULL,
+  `class` varchar(255) NOT NULL,
+  `sub_class` varchar(255) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `expert_pool` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `capability_map_catalog_id` (`capability_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=134 DEFAULT CHARSET=utf8;
+
+/*Data for the table `capability_map` */
+
+insert  into `capability_map` values (1,1,'汇编','业务基础','基础知识','',''),(2,2,'数据结构','业务基础','基础知识','',''),(3,3,'makefile','业务基础','基础知识','',''),(4,4,'CPU体系架构','业务基础','基础知识','',''),(5,5,'linux设备驱动','业务基础','基础知识','',''),(6,6,'linux进程线程','业务基础','基础知识','',''),(7,7,'linux并发控制','业务基础','基础知识','',''),(8,8,'linux中断时钟','业务基础','基础知识','',''),(9,9,'linux裁剪与打包','业务基础','基础知识','',''),(10,10,'表项管理','业务基础','基础知识','',''),(11,11,'V5和V8架构','业务基础','基础知识','',''),(12,12,'设备管理','业务基础','基础知识','',''),(13,13,'启动流程','业务基础','基础知识','',''),(14,14,'C','业务基础','基础知识','',''),(15,15,'python','业务基础','基础知识','',''),(16,16,'java/spring/osgi','业务基础','基础知识','',''),(17,17,'LLDP','业务基础','基础协议','',''),(18,18,'STP','业务基础','基础协议','',''),(19,19,'ARP','业务基础','基础协议','',''),(20,20,'ISIS','业务基础','基础协议','',''),(21,21,'路由协议基础','业务基础','基础协议','',''),(22,22,'OSPF','业务基础','基础协议','',''),(23,23,'RIP','业务基础','基础协议','',''),(24,24,'BGP','业务基础','基础协议','',''),(25,25,'VLAN','业务基础','基础业务','',''),(26,26,'MAC管理','业务基础','基础业务','',''),(27,27,'QinQ','业务基础','基础业务','',''),(28,28,'堆叠','业务基础','基础业务','',''),(29,29,'隧道管理','业务基础','基础业务','',''),(30,30,'IPV4基础','业务基础','基础业务','',''),(31,31,'IPV6基础','业务基础','基础业务','',''),(32,32,'MPLS基础','业务基础','基础业务','',''),(33,33,'VPLS','业务基础','基础业务','',''),(34,34,'ACL','业务基础','QoE','',''),(35,35,'Qos','业务基础','QoE','',''),(36,36,'MQC','业务基础','QoE','',''),(37,37,'合法监听','业务基础','QoE','',''),(38,38,'端口镜像','业务基础','QoE','',''),(39,39,'NAT/FW','业务基础','业务应用','',''),(40,40,'防火墙','业务基础','业务应用','',''),(41,41,'IPSec VPN','业务基础','业务应用','',''),(42,42,'SSL VPN','业务基础','业务应用','',''),(43,43,'DHCP','业务基础','业务应用','',''),(44,44,'DNS','业务基础','业务应用','',''),(45,45,'IDS/IPS','业务基础','业务应用','',''),(46,46,'Cache优化','业务基础','业务应用','',''),(47,47,'TCP优化','业务基础','业务应用','',''),(48,48,'报文压缩','业务基础','业务应用','',''),(49,49,'负载分担','业务基础','业务应用','',''),(50,50,'启动流程','专项技术','系统管理','',''),(51,51,'NTP','专项技术','系统管理','',''),(52,52,'进程管理','专项技术','系统管理','',''),(53,53,'asn','专项技术','系统管理','',''),(54,54,'linux诊断','专项技术','系统管理','',''),(55,55,'组件管理','专项技术','系统管理','',''),(56,56,'openstack','专项技术','应用管理','',''),(57,57,'opendaylight','专项技术','应用管理','',''),(58,58,'nova','专项技术','应用管理','',''),(59,59,'ceilometer','专项技术','应用管理','',''),(60,60,'linux pam','专项技术','配置管理','',''),(61,61,'netconf','专项技术','配置管理','',''),(62,62,'restconf','专项技术','配置管理','',''),(63,63,'snmp','专项技术','配置管理','',''),(64,64,'shell','专项技术','配置管理','',''),(65,65,'json','专项技术','配置管理','',''),(66,66,'key-value database','专项技术','配置管理','',''),(67,67,'database adapter','专项技术','配置管理','',''),(68,68,'broker/subscriber','专项技术','配置管理','',''),(69,69,'notification','专项技术','配置管理','',''),(70,70,'电子标签','专项技术','设备管理','',''),(71,71,'License','专项技术','设备管理','',''),(72,72,'告警管理','专项技术','设备管理','',''),(73,73,'监控管理','专项技术','设备管理','',''),(74,74,'虚拟化管理','专项技术','设备管理','',''),(75,75,'HA','专项技术','设备管理','',''),(76,76,'能力管理','专项技术','设备管理','',''),(77,77,'时钟管理','专项技术','设备管理','',''),(78,78,'整机硬件管理','专项技术','设备管理','',''),(79,79,'固件管理','专项技术','设备管理','',''),(80,80,'Nginx','专项技术','协议','',''),(81,81,'Squid','专项技术','协议','',''),(82,82,'dnsmasq','专项技术','协议','',''),(83,83,'ISC DHCP','专项技术','协议','',''),(84,84,'OpenSSH','专项技术','协议','',''),(85,85,'OpenSSL','专项技术','协议','',''),(86,86,'NGE','专项技术','协议','',''),(87,87,'brctl','专项技术','协议','',''),(88,88,'nftables','专项技术','协议','',''),(89,89,'ACL','专项技术','协议','',''),(90,90,'ACL-Adp','专项技术','协议','',''),(91,91,'AAA','专项技术','协议','',''),(92,92,'DAA','专项技术','协议','',''),(93,93,'NAC','专项技术','协议','',''),(94,94,'UCM','专项技术','协议','',''),(95,95,'ethtool','专项技术','协议','',''),(96,96,'WIFIdog','专项技术','协议','',''),(97,97,'rp-pppoe','专项技术','协议','',''),(98,98,'pppd','专项技术','协议','',''),(99,99,'hostapd','专项技术','协议','',''),(100,100,'iproute2','专项技术','协议','',''),(101,101,'iw','专项技术','协议','',''),(102,102,'GPS','专项技术','协议','',''),(103,103,'PPPoE','专项技术','协议','',''),(104,104,'PPP','专项技术','协议','',''),(105,105,'ARP','专项技术','协议','',''),(106,106,'VLAN','专项技术','协议','',''),(107,107,'bridge','专项技术','协议','',''),(108,108,'fib','专项技术','协议','',''),(109,109,'WPA_Supplicant','专项技术','协议','',''),(110,110,'netlink','专项技术','基础OS','',''),(111,111,'ioctl','专项技术','基础OS','',''),(112,112,'overlayfs','专项技术','基础OS','',''),(113,113,'nftables','专项技术','基础OS','',''),(114,114,'socket','专项技术','基础OS','',''),(115,115,'netmap','专项技术','基础OS','',''),(116,116,'dbus','专项技术','基础OS','',''),(117,117,'aufs','专项技术','基础OS','',''),(118,118,'工具链','专项技术','基础OS','',''),(119,119,'应用仓库','专项技术','基础OS','',''),(120,120,'文件系统','专项技术','基础OS','',''),(121,121,'libvirt','专项技术','虚拟化','',''),(122,122,'lxc','专项技术','虚拟化','',''),(123,123,'namespace','专项技术','虚拟化','',''),(124,124,'cgroup','专项技术','虚拟化','',''),(125,125,'docker','专项技术','虚拟化','',''),(126,126,'kvm','专项技术','虚拟化','',''),(127,127,'qemu','专项技术','虚拟化','',''),(128,128,'iov','专项技术','虚拟化','',''),(129,129,'gpu','专项技术','虚拟化','',''),(130,130,'包管理（apt/dpkg）','专项技术','虚拟化','',''),(131,131,'管理接口','专项技术','虚拟化','','');
+
+/*Table structure for table `newemployee_blog` */
+
+DROP TABLE IF EXISTS `newemployee_blog`;
+
+CREATE TABLE `newemployee_blog` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ident` varchar(255) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `keywords` varchar(255) DEFAULT NULL,
+  `catalog_id` bigint(20) NOT NULL,
+  `blog_content_id` bigint(20) NOT NULL,
+  `blog_content_last_update` bigint(20) NOT NULL,
+  `type` tinyint(4) NOT NULL,
+  `status` tinyint(4) NOT NULL,
+  `views` bigint(20) NOT NULL,
+  `creator` varchar(255) NOT NULL,
+  `created` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ident` (`ident`),
+  UNIQUE KEY `blog_content_id` (`blog_content_id`),
+  KEY `newemployee_blog_catalog_id` (`catalog_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+
+/*Data for the table `newemployee_blog` */
+
+insert  into `newemployee_blog` values (1,'newemployeetest1','测试发送博文','newemployeetest1',1,3,1449372803,0,1,10,'管理员','2015-12-06 11:33:23'),(2,'newemployeetest2','newemployeetest2','newemployeetest2',1,4,1449554679,0,1,43,'管理员','2015-12-06 11:33:45'),(3,'bbbbbbbbb','ggggggggggg','bbbbbbbbbbbb',2,5,1449563452,0,1,7,'管理员','2015-12-08 13:41:21'),(4,'bbbbbbbbbb','bbbbbbb','bbbbbb',3,6,1449563139,0,1,1,'管理员','2015-12-08 16:25:39'),(5,'eeeeeeeee','eeeeeee','eeeeeeee',3,7,1449563481,0,1,2,'管理员','2015-12-08 16:31:21'),(6,'yyyyyyyy','yyyyy','yyyyyy',3,8,1449563594,1,1,1,'管理员','2015-12-08 16:33:01'),(7,'wwwwwww','tttttttttttttttttttt','wwwwwww',3,9,1449563887,0,1,1,'管理员','2015-12-08 16:33:53'),(8,'aaaaaa','aaaaaaa','aaaaaaa',3,10,1449563731,0,1,1,'管理员','2015-12-08 16:35:31'),(9,'bbbbbbbbbbbbbb','bbbbbbbbbb','bbbbbbbbb',3,11,1449563791,0,1,3,'管理员','2015-12-08 16:36:31'),(10,'ccccccc','cccccccc','cccccccc',1,12,1449563864,0,1,7,'管理员','2015-12-08 16:36:51');
+
+/*Table structure for table `newemployee_blog_content` */
+
+DROP TABLE IF EXISTS `newemployee_blog_content`;
+
+CREATE TABLE `newemployee_blog_content` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `content` longtext NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+
+/*Data for the table `newemployee_blog_content` */
+
+insert  into `newemployee_blog_content` values (1,'黄业钦周报\r\n![](/static/uploads/editor/1447813610.jpg)]()'),(2,'黄业钦总结分享\r\n![](/static/uploads/editor/1447813671.jpg)'),(3,'1111111111111111111111111111111111111111111'),(4,'<p>fa客户让角色的调节收入管灌灌灌灌灌灌fawrgaweg灌灌灌灌啊啊wgaaaewwggwhavrfgswrgwrgwrgefegerahwgewwwwe啊啊啊啊啊啊啊yyyyyyyyyyyyyyyyfwagfaegaEggawhwfegbabwgeggbwwwwwwwwwgwegwegewwwwwwwwwwwwwwwwwbbbbbbbbbbbbbbbbbbbb</p>'),(5,'<p>gggggggggggggggggggggggggggwegeheheg</p>'),(6,'<p>bbbbbbbbbbbbbbbbbbbbbbbbb</p><p><br/></p><p><br/></p><p><br/></p><p><img src=\"http://localhost:8888/static/upload/4196829d9d8511e5933d286ed488f92d.jpg\" title=\"\" alt=\"Koala.jpg\"/></p>'),(7,'<p>eeeeeeeeeee</p>'),(8,'<p>yyyyyyyyyyyyyyyyyyyyyuuuuuuuuuuuuuuuu</p>'),(9,'<p>tttttttttttttttttttttttwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww</p>'),(10,'<p>aaaaaaaaaaaaaaaaaaaaa</p>'),(11,'<p>bbbbbbbbbbbbbbbbbbbbb<br/></p>'),(12,'<p>ccccccccccccccccccddddddddddddddddddd</p>');
+
+/*Table structure for table `newemployee_catalog` */
+
+DROP TABLE IF EXISTS `newemployee_catalog`;
+
+CREATE TABLE `newemployee_catalog` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ident` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `resume` varchar(255) NOT NULL,
+  `display_order` int(11) NOT NULL,
+  `img_url` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `ident` (`ident`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+
+/*Data for the table `newemployee_catalog` */
+
+insert  into `newemployee_catalog` values (1,'newemployeereport','新员工周报月报','新员工周报月报',10,'/static/upload/27f3afb29d8a11e5b484286ed488f92d.jpg'),(2,'summaryandshare','总结分享','总结分享',9,'/static/upload/2c0fdc329d8a11e5b484286ed488f92d.jpg'),(3,'publishblog','发表博文','发表博文',1,'/static/upload/75a4710a9e0d11e5a679286ed488f92d.jpg'),(4,'sourcefornew','资源库','常用资源平台（文档+平台地址）',100,'/static/upload/0ad164fb9e0e11e5a679286ed488f92d.jpg'),(5,'tobegood','华丽转身','OJ、考试、业务培训、投入项目',99,'/static/upload/64a812fb9e0e11e5a679286ed488f92d.jpg');
+
+/*Table structure for table `training_schedule_collect` */
+
+DROP TABLE IF EXISTS `training_schedule_collect`;
+
+CREATE TABLE `training_schedule_collect` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `understand` varchar(255) NOT NULL,
+  `expect_date` varchar(255) NOT NULL,
+  `important_level` varchar(255) NOT NULL,
+  `fields` varchar(255) DEFAULT NULL,
+  `created` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `title` (`title`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+
+/*Data for the table `training_schedule_collect` */
+
+insert  into `training_schedule_collect` values (1,'docker','docker golang','了解','很紧急（一个星期内）','非常重要','','2015-12-08 10:49:43'),(2,'golang1','golang1','了解','很紧急（一个星期内）','非常重要','','2015-12-08 11:13:23'),(3,'linux','linux','熟悉','不紧急（一个月内）','重要','','2015-12-08 11:16:07'),(4,'ffff','fffffffff','空白（不了解）','很紧急（一个星期内）','非常重要','','2015-12-08 11:33:30');
+
+/*Table structure for table `training_schedule_publish` */
+
+DROP TABLE IF EXISTS `training_schedule_publish`;
+
+CREATE TABLE `training_schedule_publish` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `teacher` varchar(255) NOT NULL,
+  `content` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `start_date` datetime DEFAULT NULL,
+  `room` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  `created` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `title` (`title`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+
+/*Data for the table `training_schedule_publish` */
+
+insert  into `training_schedule_publish` values (1,'linux','asdfagasdf','shell','kernel','2015-05-16 05:05:02','H2-4A22R','即将开始','2015-12-08 11:20:03'),(2,'linux2','刘盼','shell2','kenel2','2015-05-16 06:05:00','H2-4A23R','进行中','2015-12-08 11:24:54');
+
+/*Table structure for table `user` */
+
+DROP TABLE IF EXISTS `user`;
+
+CREATE TABLE `user` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+/*Data for the table `user` */
+
+insert  into `user` values (1,'h00346577','7cdad24b77bb5c7dbce0b639be20a922'),(2,'admin','21232f297a57a5a743894a0e4a801fc3'),(3,'huangyeqin','21232f297a57a5a743894a0e4a801fc3');
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
